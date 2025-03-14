@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="END-EFFECTOR-GAZEBO">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.000779839845872349 -0.0170873194546623 0.0582199927820382"
+        rpy="0 0 0" />
+      <mass
+        value="0.200722958769519" />
+      <inertia
+        ixx="0.000122002272224489"
+        ixy="-1.13774292063113E-06"
+        ixz="-4.83617188880724E-06"
+        iyy="0.000194887608314948"
+        iyz="2.99117381858236E-06"
+        izz="9.59225921675798E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="blade_stationary">
+    <inertial>
+      <origin
+        xyz="-0.00557368894630381 -0.0122907539881133 0.00132925858009713"
+        rpy="0 0 0" />
+      <mass
+        value="0.0157008165066123" />
+      <inertia
+        ixx="3.54894565615037E-06"
+        ixy="-1.00617922467536E-06"
+        ixz="4.9211811874153E-09"
+        iyy="1.01338167968976E-06"
+        iyz="4.1050442824912E-08"
+        izz="4.54778499319921E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/blade_stationary.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/blade_stationary.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_blade_stationary"
+    type="fixed">
+    <origin
+      xyz="0 -0.0083875 0.12394"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="blade_stationary" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="blade_moving">
+    <inertial>
+      <origin
+        xyz="3.87969033185664E-05 -0.00350154660982081 0.00219998568406248"
+        rpy="0 0 0" />
+      <mass
+        value="0.0382144342405943" />
+      <inertia
+        ixx="8.88222836308347E-06"
+        ixy="7.69834936555405E-06"
+        ixz="4.74020773662496E-12"
+        iyy="1.00340865289331E-05"
+        iyz="1.44904462744025E-11"
+        izz="1.87930181166959E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/blade_moving.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.776470588235294 0.756862745098039 0.737254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://END-EFFECTOR-GAZEBO/meshes/blade_moving.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_blade"
+    type="revolute">
+    <origin
+      xyz="0 -0.0059875 0.12394"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="blade_moving" />
+    <limit
+      effort="0.5"
+      lower="-3.14159265358979"
+      upper="3.14159265358979"
+      velocity="1" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>
