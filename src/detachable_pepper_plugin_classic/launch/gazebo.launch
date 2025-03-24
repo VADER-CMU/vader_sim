@@ -10,12 +10,12 @@
     pkg="tf"
     type="static_transform_publisher"
     args="0 0 0 0 0 0 base_link base_footprint 40" />
-  <node
+  <!-- <node
     name="spawn_model"
     pkg="gazebo_ros"
     type="spawn_model"
     args="-file $(find detachable_pepper_plugin_classic)/urdf/sphere.urdf -urdf -model sphere -x 0 -y 0 -z 1. "
-    output="screen" />
+    output="screen" /> -->
   <node
     name="fake_joint_calibration"
     pkg="rostopic"

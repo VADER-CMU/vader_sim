@@ -12,6 +12,27 @@
       <name>table</name>
       <pose>0.0 -0.84 0 0 0 0</pose>
     </include>
+    <model name="pepper">
+      <pose>0 0 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </visual>
+      </link>
+    </model>
 
     <physics type="ode" update_rate="100.0">
       <max_step_size>0.001</max_step_size>

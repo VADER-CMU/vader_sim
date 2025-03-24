@@ -125,13 +125,13 @@ include_directories(
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/detachable_pepper_plugin_classic.cpp
 # )
-add_executable(jointDeleter src/JointDeleter.cpp)
+# add_executable(jointDeleter src/JointDeleter.cpp)
 
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-add_dependencies(jointDeleter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(jointDeleter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -139,7 +139,7 @@ add_dependencies(jointDeleter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPOR
 # add_executable(${PROJECT_NAME}_node src/detachable_pepper_plugin_classic_node.cpp)
 
 # add_dependencies(jointDeleter ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_link_libraries(jointDeleter ${catkin_LIBRARIES})
+# target_link_libraries(jointDeleter ${catkin_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -177,12 +177,12 @@ target_link_libraries(jointDeleter ${catkin_LIBRARIES})
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS 
-  jointDeleter
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
+# install(TARGETS 
+#   jointDeleter
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
