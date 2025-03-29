@@ -8,6 +8,7 @@
     velocity_control:=false
     add_gripper:=false
     add_vader_gripper:=false
+    add_vader_cutter:=false
     add_vacuum_gripper:=false
     add_bio_gripper:=false
     dof:=7
@@ -132,6 +133,7 @@
           ros2_control_plugin="${ros2_control_plugin}"
           add_gripper="${add_gripper}"
           add_vader_gripper="${add_vader_gripper}"
+          add_vader_cutter="${add_vader_cutter}"
           add_bio_gripper="${add_bio_gripper}"
           robot_ip="${robot_ip}"
           report_type="${report_type}"
@@ -176,9 +178,17 @@
       </xacro:unless>
     </xacro:if>
 
-    <xacro:if value="${add_vader_gripper}">
+    <!-- <xacro:if value="${add_vader_gripper}">
       <xacro:include filename="$(find xarm_description)/urdf/vader/vader_debug_macro.xacro" />
       <xacro:vader_debug_macro prefix="${prefix}" attach_to="${prefix}link_eef" hard_interface="${hard_interface}" />
+    </xacro:if> -->
+    <xacro:if value="${not add_vader_cutter and add_vader_gripper}">
+      <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper_macro.xacro" />
+      <xacro:vader_gripper_macro prefix="${prefix}" attach_to="${prefix}link_eef" hard_interface="${hard_interface}" />
+    </xacro:if>
+    <xacro:if value="${not add_vader_gripper and add_vader_cutter}">
+      <xacro:include filename="$(find xarm_description)/urdf/vader/vader_cutter_macro.xacro" />
+      <xacro:vader_cutter_macro prefix="${prefix}" attach_to="${prefix}link_eef" hard_interface="${hard_interface}" />
     </xacro:if>
 
     <xacro:if value="${not add_gripper and add_bio_gripper}">

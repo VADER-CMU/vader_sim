@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="vader_gripper">
+  <xacro:macro name="vader_gripper_macro" params="prefix:='' attach_to:='' robot_type:='xarm' mesh_suffix:='stl' hard_interface:='' ">
+
+    <!-- Load Common Material -->
+    <xacro:include filename="$(find xarm_description)/urdf/_private_macro.xacro" />
+    <xacro:device_macro_begin />
+
+    <!-- Load Common Material -->
+    <xacro:include filename="$(find xarm_description)/urdf/common/common.material.xacro" />
+    <xacro:common_material prefix="${prefix}vg"/>
+
+    <xacro:property name="mesh_path" value="package://xarm_description/meshes" scope="parent"/>
+
+    <!-- include common.link.xacro -->
+    <xacro:include filename="$(find xarm_description)/urdf/common/common.link.xacro" />
+
+    <!-- Load Gripper Model URDF -->
+    <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper.urdf.xacro" />
+    <xacro:vader_gripper_urdf prefix="${prefix}" attach_to="${attach_to}"/>
+  </xacro:macro>
+</robot>

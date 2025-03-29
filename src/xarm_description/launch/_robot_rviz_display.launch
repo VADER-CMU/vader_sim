@@ -5,6 +5,7 @@
   <arg name="limited" default="True" doc="If true, limits joint range (-PI, PI) on all joints." />
   <arg name="add_gripper" default="false" doc="If true, will load xarm6 with gripper from UFACTORY attached." />
   <arg name="add_vader_gripper" default="false" />
+  <arg name="add_vader_cutter" default="false" />
   <arg name="add_vacuum_gripper" default="false" doc="If true, will load xarm6 with vacuum gripper from UFACTORY attached." />
   <arg name="joint_state_source" default="[/joint_states]" />
   <arg name="joint_state_publisher_gui" default="true" />
@@ -19,6 +20,7 @@
     <arg name="limited" value="$(arg limited)"/>
     <arg name="add_gripper" value="$(arg add_gripper)" />
     <arg name="add_vader_gripper" value="$(arg add_vader_gripper)" />
+    <arg name="add_vader_cutter" value="$(arg add_vader_cutter)" />
     <arg name="add_vacuum_gripper" value="$(arg add_vacuum_gripper)" />
     <arg name="model1300" value="$(arg model1300)" />
     <arg name="add_realsense_d435i" value="$(arg add_realsense_d435i)" />
