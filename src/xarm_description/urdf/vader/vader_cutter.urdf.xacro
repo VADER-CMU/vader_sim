@@ -6,13 +6,13 @@
   <xacro:unless value="${attach_to == ''}">
     <joint name="${prefix}v_cutter_fix" type="fixed">
       <parent link="${attach_to}"/>
-      <child link="base_link"/>
+      <child link="vader_cutter_base_link"/>
       <origin xyz="${attach_xyz}" rpy="${attach_rpy}"/>
     </joint>
   </xacro:unless>
 
   <link
-    name="base_link">
+    name="vader_cutter_base_link">
     <inertial>
       <origin
         xyz="0.000779839845872349 -0.0170873194546623 0.0582199927820382"
@@ -116,7 +116,7 @@
       xyz="0 -0.0083875 0.12394"
       rpy="-1.5708 0 0" />
     <parent
-      link="base_link" />
+      link="vader_cutter_base_link" />
     <child
       link="blade_stationary" />
     <axis
@@ -179,7 +179,7 @@
       xyz="0 -0.0059875 0.12394"
       rpy="-1.5708 0 0" />
     <parent
-      link="base_link" />
+      link="vader_cutter_base_link" />
     <child
       link="blade_moving" />
     <limit
@@ -192,7 +192,7 @@
   </joint>
 
 
-    <!-- <link name="base_link">
+    <!-- <link name="vader_cutter_base_link">
       <inertial>
         <origin xyz="0.0 0.0 0.055" rpy="0 0 0" />
         <mass value="0.656" />
@@ -217,7 +217,7 @@
 
     <joint name="${prefix}joint_tcp" type="fixed">
       <origin xyz="0 0 0.126" rpy="0 0 0" />
-      <parent link="base_link" />
+      <parent link="vader_cutter_base_link" />
       <child link="${prefix}link_tcp" />
     </joint>
 

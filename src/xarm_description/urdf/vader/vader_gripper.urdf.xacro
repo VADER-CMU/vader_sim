@@ -6,12 +6,12 @@
     <xacro:unless value="${attach_to == ''}">
       <joint name="${prefix}v_gripper_fix" type="fixed">
         <parent link="${attach_to}"/>
-        <child link="base_link"/>
+        <child link="vader_gripper_base_link"/>
         <origin xyz="${attach_xyz}" rpy="${attach_rpy}"/>
       </joint>
     </xacro:unless>
 <!-- 
-    <link name="base_link">
+    <link name="vader_gripper_base_link">
       <inertial>
         <origin xyz="0.0 0.0 0.055" rpy="0 0 0" />
         <mass value="0.656" />
@@ -31,7 +31,7 @@
     </link> -->
 
   <link
-    name="base_link">
+    name="vader_gripper_base_link">
     <inertial>
       <origin
         xyz="-9.9221E-05 -0.0018613 -0.03661"
@@ -135,7 +135,7 @@
       xyz="0 0.045195 0.013956"
       rpy="2.7397 0 -3.1416" />
     <parent
-      link="base_link" />
+      link="vader_gripper_base_link" />
     <child
       link="thumb_1" />
     <axis
@@ -202,7 +202,7 @@
       xyz="0.018 -0.045195 0.013956"
       rpy="0.40187 0 0" />
     <parent
-      link="base_link" />
+      link="vader_gripper_base_link" />
     <child
       link="fing_1" />
     <axis
@@ -269,7 +269,7 @@
       xyz="-0.018 -0.045195 0.013956"
       rpy="0.40187 0 0" />
     <parent
-      link="base_link" />
+      link="vader_gripper_base_link" />
     <child
       link="fing_2" />
     <axis
@@ -286,7 +286,7 @@
 
     <joint name="${prefix}joint_tcp" type="fixed">
       <origin xyz="0 0 0.126" rpy="0 0 0" />
-      <parent link="base_link" />
+      <parent link="vader_gripper_base_link" />
       <child link="${prefix}link_tcp" />
     </joint>
 

@@ -1,6 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="vader_gripper">
+
+  <!-- imports -->
+  <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper.urdf.xacro" />
+  <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper.transmission.xacro" />
+  <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper.gazebo.xacro" />
+  
   <xacro:macro name="vader_gripper_macro" params="prefix:='' attach_to:='' robot_type:='xarm' mesh_suffix:='stl' hard_interface:='' ">
+
 
     <!-- Load Common Material -->
     <xacro:include filename="$(find xarm_description)/urdf/_private_macro.xacro" />
@@ -18,5 +25,18 @@
     <!-- Load Gripper Model URDF -->
     <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper.urdf.xacro" />
     <xacro:vader_gripper_urdf prefix="${prefix}" attach_to="${attach_to}"/>
+
+    <!-- Sim items -->
+
+    <xacro:vader_gripper_transmission prefix="${prefix}" hard_interface="${hard_interface}" />
+
+    <xacro:vader_gripper_gazebo prefix="${prefix}" />
+
+    <xacro:vader_gripper_grasp_fix prefix="${prefix}" palm_link="${prefix}link${dof}" />
+
+    <!-- mimic_joint_plugin has to be installed: -->
+    <xacro:mimic_joint_plugin_gazebo name_prefix="${prefix}bio_gripper_left_finger_joint"
+      following_joint="${prefix}right_finger_joint" mimic_joint="${prefix}left_finger_joint"
+      has_pid="false" multiplier="-1.0" max_effort="10.0" />
   </xacro:macro>
 </robot>
