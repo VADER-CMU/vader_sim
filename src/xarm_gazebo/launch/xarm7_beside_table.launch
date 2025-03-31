@@ -6,6 +6,8 @@
   <arg name="effort_control" default="false"/>
   <arg name="velocity_control" default="false"/>
   <arg name="add_gripper" default="false" />
+  <arg name="add_vader_gripper" default="false" />
+  <arg name="add_vader_cutter" default="false" />
   <arg name="add_vacuum_gripper" default="false" />
   <arg name="namespace" default="xarm"/>
   <arg name="model1300" default="false" />
@@ -28,6 +30,7 @@
   <param name="robot_description" command="$(find xacro)/xacro
     --inorder '$(find xarm_description)/urdf/xarm_device.urdf.xacro' robot_type:=xarm dof:=7
     add_gripper:=$(arg add_gripper) add_vacuum_gripper:=$(arg add_vacuum_gripper)
+    add_vader_gripper:=$(arg add_vader_gripper) add_vader_cutter:=$(arg add_vader_cutter)
     effort_control:=$(arg effort_control) velocity_control:=$(arg xarm_velocity_control) 
     model1300:=$(arg model1300)
     add_realsense_d435i:=$(arg add_realsense_d435i)

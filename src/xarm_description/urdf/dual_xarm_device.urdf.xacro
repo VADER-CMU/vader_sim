@@ -8,6 +8,10 @@
   <xacro:arg name="velocity_control" default="false"/>
   <xacro:arg name="add_gripper_1" default="false"/>
   <xacro:arg name="add_gripper_2" default="false"/>
+  <xacro:arg name="add_vader_gripper_1" default="false"/>
+  <xacro:arg name="add_vader_gripper_2" default="false"/>
+  <xacro:arg name="add_vader_cutter_1" default="false"/>
+  <xacro:arg name="add_vader_cutter_2" default="false"/>
   <xacro:arg name="add_vacuum_gripper_1" default="false"/>
   <xacro:arg name="add_vacuum_gripper_2" default="false"/>
   <xacro:arg name="add_bio_gripper_1" default="false"/>
@@ -76,6 +80,7 @@
   <xacro:xarm_device prefix="$(arg prefix_1)" hw_ns="$(arg hw_ns)" limited="$(arg limited)" 
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
     add_gripper="$(arg add_gripper_1)" add_vacuum_gripper="$(arg add_vacuum_gripper_1)" 
+    add_vader_gripper="$(arg add_vader_gripper_1)" add_vader_cutter="$(arg add_vader_cutter_1)"
     add_bio_gripper="$(arg add_bio_gripper_1)" dof="$(arg dof_1)"
     ros2_control_plugin="$(arg ros2_control_plugin)" robot_type="$(arg robot_type_1)"
     load_gazebo_plugin="false" ros2_control_params="$(arg ros2_control_params)"
@@ -95,10 +100,11 @@
   <xacro:xarm_device prefix="$(arg prefix_2)" hw_ns="$(arg hw_ns)" limited="$(arg limited)" 
     effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
     add_gripper="$(arg add_gripper_2)" add_vacuum_gripper="$(arg add_vacuum_gripper_2)" 
+    add_vader_gripper="$(arg add_vader_gripper_2)" add_vader_cutter="$(arg add_vader_cutter_2)"
     add_bio_gripper="$(arg add_bio_gripper_2)" dof="$(arg dof_2)"
     ros2_control_plugin="$(arg ros2_control_plugin)" robot_type="$(arg robot_type_2)"
     load_gazebo_plugin="true" ros2_control_params="$(arg ros2_control_params)"
-    attach_to="world" attach_xyz="0 1 0" attach_rpy="0 0 0" create_attach_link="false"
+    attach_to="world" attach_xyz="0 0.5 0" attach_rpy="0 0 0" create_attach_link="false"
     add_realsense_d435i="$(arg add_realsense_d435i_2)" 
     add_d435i_links="$(arg add_d435i_links_2)" 
     add_other_geometry="$(arg add_other_geometry_2)" 
