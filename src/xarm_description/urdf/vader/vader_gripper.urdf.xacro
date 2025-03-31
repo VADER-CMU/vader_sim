@@ -141,10 +141,9 @@
     <axis
       xyz="-1 0 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="1" velocity="1" />
   </joint>
   <link
     name="fing_1">
@@ -208,10 +207,9 @@
     <axis
       xyz="-1 0 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="1" velocity="1" />
   </joint>
   <link
     name="fing_2">
@@ -275,10 +273,9 @@
     <axis
       xyz="-1 0 0" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="1" velocity="1" />
   </joint>
 
 
