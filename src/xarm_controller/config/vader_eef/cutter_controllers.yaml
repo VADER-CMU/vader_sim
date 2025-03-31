@@ -1,0 +1,8 @@
+vader_cutter_pos_controller:
+  type: position_controllers/JointPositionController
+  joint: joint_blade
+  pid: {p: 10.0, i: 0.1, d: 0.0}
+
+gazebo_ros_control:
+  pid_gains:
+    joint_blade: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}

@@ -5,6 +5,8 @@
   <arg name="velocity_control" default="false"/>
   <arg name="namespace" default="xarm"/>
   <arg name="add_gripper" default="false" />
+  <arg name="add_vader_cutter" default="false" />
+  <arg name="add_vader_gripper" default="false" />
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find xarm_controller)/config/xarm7/xarm7_controllers.yaml" command="load" ns="$(arg namespace)"/>
@@ -41,18 +43,27 @@
     ns="/$(arg namespace)"
     args="$(arg gripper_controller_name) "/>
 
+  <rosparam if="$(arg add_vader_cutter)" file="$(find xarm_controller)/config/vader_eef/cutter_controllers.yaml" command="load" ns="$(arg namespace)"/>
+  <arg name="cutter_controller_name" value="vader_cutter_pos_controller" />
+  <node if="$(arg add_vader_cutter)" name="vader_cutter_controller_spawner"
+    pkg="controller_manager"
+    type="spawner"
+    respawn="false"
+    output="screen"
+    ns="/$(arg namespace)"
+    args="$(arg cutter_controller_name)"/>
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen">
     <remap from="joint_states" to="$(arg namespace)/joint_states" />
   </node>
 
-  <!-- run_demo: start demo controller node, (pure position control) -->
+  <!-- run_demo: start demo controller node, (pure position control)
   <node if="$(arg run_demo_traj)" name="continuous_cmds"
     pkg="xarm_controller"
     type="sample_motion"
     respawn="false"
     output="screen"
-    ns="/$(arg namespace)"/>
+    ns="/$(arg namespace)"/> -->
 
 </launch>

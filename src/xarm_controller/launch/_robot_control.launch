@@ -5,6 +5,7 @@
   <arg name="velocity_control" default="false"/>
   <arg name="hw_ns" default="xarm"/>
   <arg name="add_gripper" default="false" />
+  <arg name="add_vader_eef" default="false" />
   <arg name="gripper_action" default="false" />
   <arg name="dual" default="false" />
 

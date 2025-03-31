@@ -18,6 +18,7 @@
   <arg name="xarm_velocity_control" value="$(eval arg('velocity_control') and not arg('run_demo'))" />
   
   <rosparam file="$(find xarm7_moveit_config)/config/xarm7_params.yaml" command="load" ns="$(arg namespace)"/>
+  <rosparam if="$(arg add_vader_cutter)" file="$(find xarm_controller)/config/vader_eef/cutter_gazebo_ros_control.yaml" command="load"/>
   <rosparam if="$(arg add_gripper)" file="$(find xarm_controller)/config/gripper/gripper_gazebo_ros_control.yaml" command="load"/>
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -50,6 +51,8 @@
     <arg name="effort_control" value="$(arg effort_control)"/>
     <arg name="velocity_control" value="$(arg xarm_velocity_control)"/>
     <arg name="add_gripper" value="$(arg add_gripper)" />
+    <arg name="add_vader_cutter" value="$(arg add_vader_cutter)" />
+    <arg name="add_vader_gripper" value="$(arg add_vader_gripper)" />
     <arg name="namespace" value="$(arg namespace)" />
   </include>
 
