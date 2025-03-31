@@ -1,0 +1,5 @@
+gazebo_ros_control:
+  pid_gains:
+    thumb_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    fing_1_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    fing_2_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}

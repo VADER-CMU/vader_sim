@@ -32,12 +32,6 @@
 
     <xacro:vader_cutter_grasp_fix prefix="${prefix}" palm_link="${prefix}link${dof}" />
 
-    <xacro:mimic_joint_plugin_gazebo name_prefix="vader_cutter_fing_1_mimic"
-      following_joint="thumb_joint" mimic_joint="fing_1_joint"
-      has_pid="false" multiplier="1.0" max_effort="10.0" />
-
-    <xacro:mimic_joint_plugin_gazebo name_prefix="vader_cutter_fing_2_mimic"
-      following_joint="thumb_joint" mimic_joint="fing_2_joint"
-      has_pid="false" multiplier="1.0" max_effort="10.0" />
+    
   </xacro:macro>
 </robot>

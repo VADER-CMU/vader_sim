@@ -35,8 +35,19 @@
     <xacro:vader_gripper_grasp_fix prefix="${prefix}" palm_link="${prefix}link${dof}" />
 
     <!-- mimic_joint_plugin has to be installed: -->
-    <xacro:mimic_joint_plugin_gazebo name_prefix="${prefix}bio_gripper_left_finger_joint"
-      following_joint="${prefix}right_finger_joint" mimic_joint="${prefix}left_finger_joint"
-      has_pid="false" multiplier="-1.0" max_effort="10.0" />
+    <!-- <xacro:mimic_joint_plugin_gazebo name_prefix="vader_cutter_fing_1_mimic"
+      following_joint="thumb_joint" mimic_joint="fing_1_joint"
+      has_pid="false" multiplier="1.0" max_effort="10.0" />
+
+    <xacro:mimic_joint_plugin_gazebo name_prefix="vader_cutter_fing_2_mimic"
+      following_joint="thumb_joint" mimic_joint="fing_2_joint"
+      has_pid="false" multiplier="1.0" max_effort="10.0" /> -->
+    <!-- <xacro:mimic_joint_plugin_gazebo name_prefix="vg_mimic_1_"
+      following_joint="thumb_joint" mimic_joint="fing_1_joint"
+      has_pid="true" multiplier="1.0" max_effort="10.0" />
+
+    <xacro:mimic_joint_plugin_gazebo name_prefix="vg_mimic_2_"
+      following_joint="thumb_joint" mimic_joint="fing_2_joint"
+      has_pid="true" multiplier="1.0" max_effort="10.0" /> -->
   </xacro:macro>
 </robot>
