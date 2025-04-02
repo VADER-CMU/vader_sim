@@ -44,6 +44,9 @@
 
   <!-- <rosparam file="$(find uf_robot_moveit_config)/config/$(arg robot_name)/$(arg robot_name)_params.yaml" command="load" ns="$(arg hw_ns)"/> -->
   <rosparam if="$(eval arg('add_gripper') and arg('robot_type') != 'lite')" file="$(find xarm_controller)/config/gripper/dual_gripper_gazebo_ros_control.yaml" command="load"/>
+  <rosparam if="$(arg add_vader_eef)" file="$(find xarm_controller)/config/vader_eef/cutter_gazebo_ros_control.yaml" command="load"/>
+  <rosparam if="$(arg add_vader_eef)" file="$(find xarm_controller)/config/vader_eef/gripper_gazebo_ros_control.yaml" command="load"/>
+
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_table.world"/>
@@ -119,6 +122,7 @@
     <arg name="effort_control" value="$(arg effort_control)"/>
     <arg name="velocity_control" value="$(arg velocity_control)"/>
     <arg name="add_gripper" value="$(arg add_gripper)" />
+    <arg name="add_vader_eef" value="$(arg add_vader_eef)" />
     <arg name="hw_ns" value="$(arg hw_ns)" />
     <arg name="dual" value="true" />
   </include>
