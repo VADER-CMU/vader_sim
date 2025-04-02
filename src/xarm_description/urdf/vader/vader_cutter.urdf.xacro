@@ -184,8 +184,8 @@
       link="blade_moving" />
     <limit
       effort="0.5"
-      lower="-3.14159265358979"
-      upper="3.14159265358979"
+      lower="-0.75"
+      upper="0"
       velocity="1" />
     <axis
       xyz="0 0 1" />
