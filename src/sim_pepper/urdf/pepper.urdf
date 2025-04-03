@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="pepper_plant">
+
+  <!-- Peduncle (Fruit Stem) -->
+  <link name="peduncle">
+    <visual>
+      <geometry>
+        <cylinder length="0.02" radius="0.002"/>  <!-- 25mm length, 4mm dia -->
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.02" radius="0.002"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.005"/>  <!-- 5g based on avg pedicel weight [2] -->
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <!-- Pepper Fruit -->
+  <link name="fruit">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.035"/>  <!-- 80mm length, 70mm dia -->
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.035"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.15"/>  <!-- 150g avg fruit weight [1][7] -->
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <!-- Peduncle-Fruit Connection -->
+  <joint name="peduncle_to_fruit" type="fixed">
+    <parent link="peduncle"/>
+    <child link="fruit"/>
+    <origin xyz="0 0 -0.05" rpy="0 0 0"/>  <!-- Center of peduncle top -->
+  </joint>
+
+  <gazebo reference="peduncle">
+    <material>Gazebo/Green</material>
+    <sensor type="contact" name="my_contact">
+      <collision>asdf</collision>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="fruit">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+</robot>

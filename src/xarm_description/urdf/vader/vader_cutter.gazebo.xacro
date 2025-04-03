@@ -23,7 +23,7 @@
       </plugin>
     </gazebo>
   </xacro:macro>
-
+<!-- 
   <xacro:macro name="vader_cutter_grasp_fix" params="prefix:='' arm_name:='vader_gripper' palm_link:=''">
     <gazebo>
       <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
@@ -42,7 +42,7 @@
         <contact_topic>__default_topic__</contact_topic>
       </plugin>
     </gazebo>
-  </xacro:macro>
+  </xacro:macro> -->
 
   <xacro:macro name="vader_cutter_gazebo" params="prefix">
 

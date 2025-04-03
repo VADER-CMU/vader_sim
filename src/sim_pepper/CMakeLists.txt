@@ -11,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
   gazebo_dev
   gazebo_msgs
+  gazebo_common
+  gazebo_util
+  gazebo_sensors
   roscpp
 )
 
@@ -154,6 +157,9 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
+add_library(ContactPlugin SHARED ContactPlugin.cc)
+target_link_libraries()
 
 #############
 ## Install ##

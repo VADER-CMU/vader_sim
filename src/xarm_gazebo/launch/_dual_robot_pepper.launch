@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="paused" default="true" doc="Starts gazebo in paused mode" />
+  <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
   <arg name="gui" default="true" doc="Starts gazebo gui" />
 
   <arg name="dof" default="7" />
@@ -49,7 +49,7 @@
 
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_table.world"/>
+    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_breakable_pepper.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
@@ -127,11 +127,5 @@
     <arg name="dual" value="true" />
   </include>
 
-  <node
-    name="spawn_model"
-    pkg="gazebo_ros"
-    type="spawn_model"
-    args="-file $(find sim_pepper)/urdf/pepper.urdf -urdf -model gazebo_model_name -x 0 -y -0.29 -z 0.98 -R 0 -P 1.57 -Y 0"
-    output="screen" />
 
 </launch>

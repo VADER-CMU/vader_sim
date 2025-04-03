@@ -53,15 +53,22 @@
   <build_depend>gazebo_dev</build_depend>
   <build_depend>gazebo_msgs</build_depend>
   <build_depend>roscpp</build_depend>
+  <build_depend>gazebo_common</build_depend>
+  <build_depend>gazebo_util</build_depend>
+  <build_depend>gazebo_sensors</build_depend>
   <build_export_depend>gazebo_ros</build_export_depend>
   <build_export_depend>gazebo_dev</build_export_depend>
   <build_export_depend>gazebo_msgs</build_export_depend>
-
+  <build_export_depend>gazebo_common</build_export_depend>
+  <build_export_depend>gazebo_util</build_export_depend>
+  <build_export_depend>gazebo_sensors</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>gazebo_dev</exec_depend>
   <exec_depend>gazebo_msgs</exec_depend>
-
+  <exec_depend>gazebo_common</exec_depend>
+  <exec_depend>gazebo_util</exec_depend>
+  <exec_depend>gazebo_sensors</exec_depend>
   <exec_depend>roscpp</exec_depend>
 
 

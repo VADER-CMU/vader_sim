@@ -30,7 +30,7 @@
 
     <xacro:vader_cutter_gazebo prefix="${prefix}" />
 
-    <xacro:vader_cutter_grasp_fix prefix="${prefix}" palm_link="${prefix}link${dof}" />
+    <!-- <xacro:vader_cutter_grasp_fix prefix="${prefix}" palm_link="${prefix}link${dof}" /> -->
 
     
   </xacro:macro>

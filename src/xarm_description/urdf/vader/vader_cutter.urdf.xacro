@@ -183,10 +183,10 @@
     <child
       link="blade_moving" />
     <limit
-      effort="0.5"
+      effort="5"
       lower="-0.75"
       upper="0"
-      velocity="1" />
+      velocity="100" />
     <axis
       xyz="0 0 1" />
   </joint>
