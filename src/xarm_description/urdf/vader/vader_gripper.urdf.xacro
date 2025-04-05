@@ -143,7 +143,7 @@
     <limit
       lower="-1"
       upper="1.5"
-      effort="1" velocity="1" />
+      effort="5" velocity="1" />
   </joint>
   <link
     name="fing_1">
@@ -209,7 +209,7 @@
     <limit
       lower="-1"
       upper="1.5"
-      effort="1" velocity="1" />
+      effort="5" velocity="1" />
   </joint>
   <link
     name="fing_2">
@@ -275,7 +275,7 @@
     <limit
       lower="-1"
       upper="1.5"
-      effort="1" velocity="1" />
+      effort="5" velocity="1" />
   </joint>
 
 

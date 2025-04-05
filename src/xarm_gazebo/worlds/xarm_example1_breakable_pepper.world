@@ -13,7 +13,8 @@
       <pose>0.0 -0.84 0 0 0 0</pose>
     </include>
     <model name='pepper_plant'>
-    <pose>0 -0.29 0.98 0 1.57 0</pose>
+    <!-- <pose>0.5 -0.29 0.98 0 1.57 0</pose> -->
+    <pose>0.5 -0.35 1 1.57 1.57 0</pose>
     <link name='peduncle'>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>

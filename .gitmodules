@@ -1,0 +1,6 @@
+[submodule "src/gazebo-pkgs"]
+	path = src/gazebo-pkgs
+	url = https://github.com/JenniferBuehler/gazebo-pkgs.git
+[submodule "src/general-message-pkgs"]
+	path = src/general-message-pkgs
+	url = https://github.com/JenniferBuehler/general-message-pkgs.git

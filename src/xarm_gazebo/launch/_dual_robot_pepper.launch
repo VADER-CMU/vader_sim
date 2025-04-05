@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="paused" default="true" doc="Starts gazebo in paused mode" />
+  <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
   <arg name="gui" default="true" doc="Starts gazebo gui" />
 
   <arg name="dof" default="7" />
@@ -51,6 +51,7 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_breakable_pepper.world"/>
     <arg name="paused" value="$(arg paused)"/>
+    <arg name="verbose" value="true"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
 
