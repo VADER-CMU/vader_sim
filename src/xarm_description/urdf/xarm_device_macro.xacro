@@ -178,10 +178,6 @@
       </xacro:unless>
     </xacro:if>
 
-    <!-- <xacro:if value="${add_vader_gripper}">
-      <xacro:include filename="$(find xarm_description)/urdf/vader/vader_debug_macro.xacro" />
-      <xacro:vader_debug_macro prefix="${prefix}" attach_to="${prefix}link_eef" hard_interface="${hard_interface}" />
-    </xacro:if> -->
     <xacro:if value="${not add_vader_cutter and add_vader_gripper}">
       <xacro:include filename="$(find xarm_description)/urdf/vader/vader_gripper_macro.xacro" />
       <xacro:vader_gripper_macro prefix="${prefix}" attach_to="${prefix}link_eef" hard_interface="${hard_interface}" />
