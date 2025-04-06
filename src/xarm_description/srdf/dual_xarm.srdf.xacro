@@ -9,6 +9,11 @@
   <xacro:arg name="robot_type_2" default="xarm" />
   <xacro:arg name="add_gripper_1" default="false" />
   <xacro:arg name="add_gripper_2" default="false" />
+
+  <xacro:arg name="add_vader_gripper_1" default="false" />
+  <xacro:arg name="add_vader_gripper_2" default="false" />
+  <xacro:arg name="add_vader_cutter_1" default="false" />
+  <xacro:arg name="add_vader_cutter_2" default="false" />
   <xacro:arg name="add_vacuum_gripper_1" default="false" />
   <xacro:arg name="add_vacuum_gripper_2" default="false" />
   <xacro:arg name="add_other_geometry_1" default="false" />
@@ -16,8 +21,10 @@
 
   <xacro:include filename="$(find xarm_description)/srdf/xarm_macro.srdf.xacro" />
   <xacro:xarm_macro_srdf prefix="$(arg prefix_1)" dof="$(arg dof_1)" robot_type="$(arg robot_type_1)" 
+    add_vader_gripper="$(arg add_vader_gripper_1)" add_vader_cutter="$(arg add_vader_cutter_1)"
     add_gripper="$(arg add_gripper_1)" add_vacuum_gripper="$(arg add_vacuum_gripper_1)" add_other_geometry="$(arg add_other_geometry_1)" />
   <xacro:xarm_macro_srdf prefix="$(arg prefix_2)" dof="$(arg dof_2)" robot_type="$(arg robot_type_2)" 
+    add_vader_gripper="$(arg add_vader_gripper_2)" add_vader_cutter="$(arg add_vader_cutter_2)"
     add_gripper="$(arg add_gripper_2)" add_vacuum_gripper="$(arg add_vacuum_gripper_2)" add_other_geometry="$(arg add_other_geometry_2)" />
 
 </robot>

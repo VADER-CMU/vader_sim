@@ -10,13 +10,15 @@
   <!-- CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group -->
   <!-- SUBGROUPS: Groups can also be formed by referencing to already defined group names -->
   <xacro:macro name="xarm7_macro_srdf" params="prefix='' 
-    add_gripper='false' add_vacuum_gripper='false' add_other_geometry='false' ">
+    add_gripper='false' add_vader_gripper='false' add_vader_cutter='false' add_vacuum_gripper='false' add_other_geometry='false' ">
 
     <xacro:if value="${add_gripper}">
       <xacro:property name="_use_gripper" value="true"/>
       <xacro:property name="_use_vacuum_gripper" value="false"/>
       <xacro:property name="_use_other_geometry" value="false"/>
       <xacro:property name="_use_no_end_effector" value="false"/>
+      <xacro:property name="_use_vader_gripper" value="false"/>
+      <xacro:property name="_use_vader_cutter" value="false"/>
     </xacro:if>
     <xacro:unless value="${add_gripper}">
       <xacro:if value="${add_vacuum_gripper}">
@@ -24,6 +26,8 @@
         <xacro:property name="_use_vacuum_gripper" value="true"/>
         <xacro:property name="_use_other_geometry" value="false"/>
         <xacro:property name="_use_no_end_effector" value="false"/>
+        <xacro:property name="_use_vader_gripper" value="false"/>
+        <xacro:property name="_use_vader_cutter" value="false"/>
       </xacro:if>
       <xacro:unless value="${add_vacuum_gripper}">
         <xacro:if value="${add_other_geometry}">
@@ -31,12 +35,37 @@
           <xacro:property name="_use_vacuum_gripper" value="false"/>
           <xacro:property name="_use_other_geometry" value="true"/>
           <xacro:property name="_use_no_end_effector" value="false"/>
+          <xacro:property name="_use_vader_gripper" value="false"/>
+          <xacro:property name="_use_vader_cutter" value="false"/>
         </xacro:if>
         <xacro:unless value="${add_other_geometry}">
-          <xacro:property name="_use_gripper" value="false"/>
-          <xacro:property name="_use_vacuum_gripper" value="false"/>
-          <xacro:property name="_use_other_geometry" value="false"/>
-          <xacro:property name="_use_no_end_effector" value="true"/>
+          <xacro:if value="${add_vader_gripper}">
+            <xacro:property name="_use_gripper" value="false"/>
+            <xacro:property name="_use_vacuum_gripper" value="false"/>
+            <xacro:property name="_use_other_geometry" value="false"/>
+            <xacro:property name="_use_no_end_effector" value="false"/>
+            <xacro:property name="_use_vader_gripper" value="true"/>
+            <xacro:property name="_use_vader_cutter" value="false"/>
+          </xacro:if>
+          <xacro:unless value="${add_vader_gripper}">
+            <xacro:if value="${add_vader_cutter}">
+              <xacro:property name="_use_gripper" value="false"/>
+              <xacro:property name="_use_vacuum_gripper" value="false"/>
+              <xacro:property name="_use_other_geometry" value="false"/>
+              <xacro:property name="_use_no_end_effector" value="false"/>
+              <xacro:property name="_use_vader_gripper" value="false"/>
+              <xacro:property name="_use_vader_cutter" value="true"/>
+            </xacro:if>
+            <xacro:unless value="${add_vader_cutter}"> <!--no EEF-->
+              <xacro:property name="_use_gripper" value="false"/>
+              <xacro:property name="_use_vacuum_gripper" value="false"/>
+              <xacro:property name="_use_other_geometry" value="false"/>
+              <xacro:property name="_use_no_end_effector" value="true"/>
+              <xacro:property name="_use_vader_gripper" value="true"/>
+              <xacro:property name="_use_vader_cutter" value="false"/>
+            </xacro:unless>
+          </xacro:unless>
+
         </xacro:unless>
       </xacro:unless>
     </xacro:unless>
@@ -53,6 +82,14 @@
       <!-- To count in gripper TCP offset, if no need, please uncomment following 2 lines -->
       <xacro:if value="${_use_gripper}">
         <joint name="${prefix}gripper_fix" />
+        <joint name="${prefix}joint_tcp" />
+      </xacro:if>
+      <xacro:if value="${_use_vader_gripper}">
+        <!-- <joint name="vader_gripper_grasp_fix" /> -->
+        <joint name="${prefix}joint_tcp" />
+      </xacro:if>
+      <xacro:if value="${_use_vader_cutter}">
+        <!-- <joint name="vader_cutter_grasp_fix" /> -->
         <joint name="${prefix}joint_tcp" />
       </xacro:if>
       <!-- 'not' seems not working in Kinetic evaluation  -->
@@ -188,6 +225,51 @@
       <disable_collisions link1="${prefix}link6" link2="${prefix}xarm_vacuum_gripper_link" reason="Never" />
       <disable_collisions link1="${prefix}link7" link2="${prefix}xarm_vacuum_gripper_link" reason="Never" />
       <disable_collisions link1="${prefix}link_eef" link2="${prefix}xarm_vacuum_gripper_link" reason="Adjacent" />
+    </xacro:if>
+
+    <!-- vader gripper -->
+    <xacro:if value="${_use_vader_gripper}">
+      <group name="${prefix}vader_gripper">
+        <!-- <joint name="${prefix}v_gripper_fix" /> -->
+        <link name="fing_1" />
+        <link name="fing_2" />
+        <link name="thumb_1" />
+        <link name="${prefix}link_tcp" />
+        <link name="vader_gripper_base_link"/>
+      </group>
+      <end_effector name="${prefix}vader_gripper" parent_link="${prefix}link_tcp" group="${prefix}vader_gripper" />
+      <!-- <passive_joint name="${prefix}v_gripper_fix" /> -->
+
+      <!-- <disable_collisions link1="${prefix}link3" link2="" reason="Never" />
+      <disable_collisions link1="${prefix}link6" link2="${prefix}xarm_vacuum_gripper_link" reason="Never" />
+      <disable_collisions link1="${prefix}link7" link2="${prefix}xarm_vacuum_gripper_link" reason="Never" /> -->
+      <disable_collisions link1="${prefix}link7" link2="vader_gripper_base_link" reason="Adjacent" />
+      <disable_collisions link1="${prefix}link_eef" link2="vader_gripper_base_link" reason="Adjacent" />
+      <disable_collisions link1="fing_1" link2="vader_gripper_base_link" reason="Adjacent" />
+      <disable_collisions link1="fing_2" link2="vader_gripper_base_link" reason="Adjacent" />
+      <disable_collisions link1="thumb_1" link2="vader_gripper_base_link" reason="Adjacent" />
+
+    </xacro:if>
+    <!-- vader cutter -->
+    <xacro:if value="${_use_vader_cutter}">
+      <group name="${prefix}vader_cutter">
+        <!-- <joint name="${prefix}v_cutter_fix" /> -->
+        <link name="blade_stationary" />
+        <link name="blade_moving" />
+        <link name="${prefix}link_tcp" />
+        <link name="vader_cutter_base_link"/>
+      </group>
+      <end_effector name="${prefix}vader_cutter" parent_link="${prefix}link_tcp" group="${prefix}vader_cutter" />
+      <!-- <passive_joint name="${prefix}v_cutter_fix" /> -->
+
+      <!-- <disable_collisions link1="${prefix}link3" link2="" reason="Never" />
+      <disable_collisions link1="${prefix}link6" link2="${prefix}xarm_vacuum_cutter_link" reason="Never" />
+      <disable_collisions link1="${prefix}link7" link2="${prefix}xarm_vacuum_cutter_link" reason="Never" /> -->
+      <disable_collisions link1="${prefix}link7" link2="vader_cutter_base_link" reason="Adjacent" />
+      <disable_collisions link1="${prefix}link_eef" link2="vader_cutter_base_link" reason="Adjacent" />
+      <disable_collisions link1="blade_stationary" link2="vader_cutter_base_link" reason="Adjacent" />
+      <disable_collisions link1="blade_moving" link2="vader_cutter_base_link" reason="Adjacent" />
+      <disable_collisions link1="blade_moving" link2="blade_stationary" reason="Adjacent" />
     </xacro:if>
 
     <!-- other box -->
