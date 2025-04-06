@@ -24,7 +24,7 @@
   <rosparam if="$(arg add_gripper)" file="$(find xarm_controller)/config/gripper/gripper_gazebo_ros_control.yaml" command="load"/>
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_table.world"/>
+    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_breakable_pepper.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>

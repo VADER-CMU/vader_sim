@@ -14,6 +14,7 @@
   <arg name="robot_description" default="robot_description"/>
 
   <arg name="add_gripper" default="false"/>
+  <arg name="add_vader_gripper" default="false" />
   <arg name="add_vacuum_gripper" default="false"/>
   <arg name="add_other_geometry" default="false"/>
   <arg name="geometry_type" default="box"/>
@@ -39,6 +40,7 @@
       attach_rpy:=$(arg attach_rpy)
       robot_sn:=$(arg robot_sn)
       add_gripper:=$(arg add_gripper)
+      add_vader_gripper:=$(arg add_vader_gripper)
       add_vacuum_gripper:=$(arg add_vacuum_gripper)
       add_other_geometry:=$(arg add_other_geometry)
       geometry_type:=$(arg geometry_type)
@@ -57,6 +59,7 @@
   <param if="$(arg load_robot_description)" name="$(arg robot_description)_semantic" 
     command="xacro --inorder  '$(find xarm_description)/srdf/xarm.srdf.xacro' robot_type:=xarm dof:=7
       add_gripper:=$(arg add_gripper)
+      add_vader_gripper:=$(arg add_vader_gripper)
       add_vacuum_gripper:=$(arg add_vacuum_gripper)
       add_other_geometry:=$(arg add_other_geometry)
   "/>

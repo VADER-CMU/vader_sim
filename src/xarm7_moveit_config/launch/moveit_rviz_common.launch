@@ -36,6 +36,8 @@
   <arg name="sim_gazebo" default="false"/>
   <arg name="add_gripper" default="false"/>
   <arg name="add_vacuum_gripper" default="false"/>
+  <arg name="add_vader_gripper" default="false" />
+
   <arg name="add_other_geometry" default="false"/>
   <arg name="geometry_type" default="box"/>
   <arg name="geometry_mass" default="0.1"/>
@@ -62,6 +64,8 @@
 
     <arg name="add_gripper" value="$(arg add_gripper)"/>
     <arg name="add_vacuum_gripper" value="$(arg add_vacuum_gripper)"/>
+    <arg name="add_vader_gripper" value="$(arg add_vader_gripper)" />
+
     <arg name="add_other_geometry" value="$(arg add_other_geometry)"/>
     <arg name="geometry_type" value="$(arg geometry_type)"/>
     <arg name="geometry_mass" value="$(arg geometry_mass)"/>

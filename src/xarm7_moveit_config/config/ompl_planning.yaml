@@ -1,4 +1,25 @@
+# request_adapters:
+#   - default_planner_request_adapters/FixWorkspaceBounds
+#   - default_planner_request_adapters/FixStartStateBounds
+#   - default_planner_request_adapters/FixStartStateCollision
+#   - default_planner_request_adapters/ResolveConstraintFrames
+#   - default_planner_request_adapters/AddTimeParameterization
+
+
 planner_configs:
+  # CHOMP:
+  
+  #   type: chomp
+  #   class: "chomp_interface/CHOMPPlanner"
+  #   max_iterations: 200  # Maximum iterations for optimization
+  #   max_time: 10.0       # Maximum time allowed for planning
+  #   smoothness_cost_weight: 0.1  # Weight for smoothness cost
+  #   obstacle_cost_weight: 1.0    # Weight for obstacle avoidance cost
+  #   learning_rate: 0.01          # Learning rate for optimization
+  #   ridge_factor: 0.01           # Ridge factor for optimization
+  #   use_pseudo_inverse: true     # Use pseudo-inverse for Jacobian computation
+  #   use_hessian: false           # Use Hessian matrix for optimization
+  #   joint_update_limit: 0.1 
   SBL:
     type: geometric::SBL
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -121,32 +142,6 @@ planner_configs:
     dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
 xarm7:
-  default_planner_config: RRTConnect
-  planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
-xarm/xarm_gripper:
   default_planner_config: RRTConnect
   planner_configs:
     - SBL

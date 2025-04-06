@@ -3,7 +3,8 @@
   <arg name="add_gripper" default="false" />
   <arg name="add_vacuum_gripper" default="false" />
   <arg name="namespace" default="xarm"/>
-  <arg name="no_gui_plan" default="true" />
+  <arg name="no_gui_plan" default="false" />
+  <arg name="add_vader_gripper" default="true" />
   <arg name="robot_type" default="xarm"/>
   <arg name="model1300" default="false" />
 
@@ -40,7 +41,8 @@
     <arg name="add_realsense_d435i" value="$(arg add_realsense_d435i)"/>
     <arg name="add_d435i_links" value="$(arg add_d435i_links)"/>
     <arg name="robot_sn" value="$(arg robot_sn)"/>
-
+    <arg name="fake_execution" value="false"/>
+    <arg name="add_vader_gripper" value="$(arg add_vader_gripper)" /> 
     <arg name="sim_gazebo" value="true"/>
     <arg name="add_gripper" value="$(arg add_gripper)"/>
     <arg name="add_vacuum_gripper" value="$(arg add_vacuum_gripper)"/>
@@ -57,13 +59,14 @@
     <arg name="geometry_mesh_tcp_xyz" value="$(arg geometry_mesh_tcp_xyz)"/>
     <arg name="geometry_mesh_tcp_rpy" value="$(arg geometry_mesh_tcp_rpy)"/>
     <!-- uhhh -->
-    <arg name="NO_GUI_CTRL" default="true"/>
+    <arg name="NO_GUI_CTRL" default="false"/>
 
   </include>
 
 
   <!-- XARM GAZEBO -->
   <include file="$(find xarm_gazebo)/launch/xarm7_beside_table.launch">
+    <arg name="add_vader_gripper" value="$(arg add_vader_gripper)" />
   </include>
 
 
