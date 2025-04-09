@@ -40,12 +40,12 @@
         izz="0.01" />
     </inertial>
     <xacro:common_link_visual
-      mesh_filename="vader/bin/storage_bin"
+      mesh_filename="vader/storage_bin/storage_bin"
       origin_xyz="0 0 0"
       origin_rpy="0 0 0"
       material_name="${prefix}White"/>
     <xacro:common_link_collision 
-      mesh_filename="vader/bin/storage_bin"  
+      mesh_filename="vader/storage_bin/storage_bin"  
       origin_xyz="0 0 0" 
       origin_rpy="0 0 0" />
   </link>
