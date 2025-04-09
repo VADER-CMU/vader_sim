@@ -1,0 +1,69 @@
+# default controller 
+#Gripper is LEFT
+L_gripper_traj_controller:
+  type: position_controllers/JointTrajectoryController
+  joints: 
+    - joint_blade
+  constraints:
+    goal_time: 0.5
+    stopped_velocity_tolerance: 0.05
+    joint_blade: {trajectory: 1, goal: 0.01}
+
+L_gripper_velo_traj_controller:
+  type: velocity_controllers/JointTrajectoryController
+  joints: 
+    - joint_blade
+  gains:
+    joint_blade: {p: 10, i: 0.1, d: 0.1, i_clamp: 0}
+  constraints:
+    goal_time: 0.5
+    stopped_velocity_tolerance: 0.05
+    joint_blade: {trajectory: 1, goal: 0.01}
+
+L_gripper_action_controller:
+  type: position_controllers/GripperActionController
+  joint: joint_blade
+  action_monitor_rate: 20
+  goal_tolerance: 0.005
+  max_effort: 100
+  stall_velocity_threshold: 0.01
+  stall_timeout: 0.5
+
+# default controller 
+R_gripper_traj_controller:
+  type: position_controllers/JointTrajectoryController
+  joints: 
+    - thumb_joint
+  constraints:
+    goal_time: 0.5
+    stopped_velocity_tolerance: 0.05
+    thumb_joint: {trajectory: 1, goal: 0.01}
+
+R_gripper_velo_traj_controller:
+  type: velocity_controllers/JointTrajectoryController
+  joints: 
+    - thumb_joint
+  gains:
+    thumb_joint: {p: 10, i: 0.1, d: 0.1, i_clamp: 0}
+  constraints:
+    goal_time: 0.5
+    stopped_velocity_tolerance: 0.05
+    thumb_joint: {trajectory: 1, goal: 0.01}
+
+R_gripper_action_controller:
+  type: position_controllers/GripperActionController
+  joint: thumb_joint
+  action_monitor_rate: 20
+  goal_tolerance: 0.005
+  max_effort: 100
+  stall_velocity_threshold: 0.01
+  stall_timeout: 0.5
+
+# No Pid gains specified error fix
+gazebo_ros_control:
+  pid_gains:
+    joint_blade: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    thumb_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    fing_1_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    fing_2_joint: {p: 10.0, i: 0.1, d: 0.0, i_clamp: 0.2, antiwindup: false, publish_state: true}
+    

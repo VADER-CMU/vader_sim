@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="vader_bin">
+
+  <xacro:macro name="vader_bin_urdf" params="prefix:='' attach_to:='' attach_xyz:='0 -0.3 0' attach_rpy:='1.57 0 0' ">
+    <!-- Load Common Material -->
+    <xacro:include filename="$(find xarm_description)/urdf/_private_macro.xacro" />
+    <xacro:device_macro_begin />
+
+    <!-- Load Common Material -->
+    <xacro:include filename="$(find xarm_description)/urdf/common/common.material.xacro" />
+    <xacro:common_material prefix="${prefix}"/>
+
+    <!-- Specify Mesh file path -->
+    <xacro:property name="mesh_suffix" value="stl" scope="parent"/>
+    <xacro:property name="mesh_path" value="package://xarm_description/meshes" scope="parent"/>
+
+    <!-- include common.link.xacro -->
+    <xacro:include filename="$(find xarm_description)/urdf/common/common.link.xacro" />
+    <xacro:unless value="${attach_to == ''}">
+      <joint name="${prefix}v_bin_fix" type="fixed">
+        <parent link="${attach_to}"/>
+        <child link="${prefix}vader_bin_link"/>
+        <origin xyz="${attach_xyz}" rpy="${attach_rpy}"/>
+      </joint>
+    </xacro:unless>
+    <link
+    name="${prefix}vader_bin_link">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.28958" />
+      <inertia
+        ixx="0.01"
+        ixy="0"
+        ixz="0"
+        iyy="0.01"
+        iyz="0"
+        izz="0.01" />
+    </inertial>
+    <xacro:common_link_visual
+      mesh_filename="vader/storage_bin/storage_bin"
+      origin_xyz="0 0 0"
+      origin_rpy="0 0 0"
+      material_name="${prefix}White"/>
+    <xacro:common_link_collision 
+      mesh_filename="vader/storage_bin/storage_bin"  
+      origin_xyz="0 0 0" 
+      origin_rpy="0 0 0" />
+  </link>
+
+  </xacro:macro>
+</robot>

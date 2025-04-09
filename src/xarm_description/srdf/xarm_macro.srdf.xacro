@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="xarm_srdf">
+  <xacro:macro name="xarm_macro_srdf" params="prefix:='' dof:=7 robot_type:='xarm'
+    add_vader_gripper:='false' add_vader_cutter:='false'
+    add_gripper:='false' add_vacuum_gripper:='false' add_other_geometry:='false' "> 
+    
+
+    <xacro:include filename="$(find xarm_description)/srdf/_xarm7_macro.srdf.xacro" />
+    <xacro:xarm7_macro_srdf prefix="${prefix}" 
+    add_vader_gripper="${add_vader_gripper}" add_vader_cutter="${add_vader_cutter}"
+      add_gripper="${add_gripper}" add_vacuum_gripper="${add_vacuum_gripper}" add_other_geometry="${add_other_geometry}"  />
+  </xacro:macro>
+</robot>
