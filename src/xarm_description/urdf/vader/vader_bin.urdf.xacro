@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="vader_bin">
 
-  <xacro:macro name="vader_bin_urdf" params="prefix:='' attach_to:='' attach_xyz:='0 -0.3 -0.2' attach_rpy:='1.57 0 0' ">
+  <xacro:macro name="vader_bin_urdf" params="prefix:='' attach_to:='' attach_xyz:='0 -0.3 0' attach_rpy:='1.57 0 0' ">
     <!-- Load Common Material -->
     <xacro:include filename="$(find xarm_description)/urdf/_private_macro.xacro" />
     <xacro:device_macro_begin />
