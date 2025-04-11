@@ -30,6 +30,9 @@
   <arg name="pepper_Y" value="$(eval arg('sim_pepper_pose').split()[5])" />
   <arg name="pepper_sdf_file" default="$(find xarm_gazebo)/worlds/breakable_pepper.sdf" />
 
+  <arg name="bin_xyz" default="0.0 0.0 0.0"/>
+  <arg name="_bin_xyz" value="'$(arg bin_xyz)'" />
+
   <arg name="add_vacuum_gripper" default="false" />
   <arg name="add_other_geometry" default="false"/>
   <arg name="geometry_type" default="box"/>
@@ -91,6 +94,7 @@
     add_vader_gripper_2:=false
     add_vader_cutter_1:=false
     add_vader_cutter_2:=$(arg add_vader_eef)
+    bin_xyz:=$(arg _bin_xyz)
     add_vacuum_gripper_1:=$(arg add_vacuum_gripper)
     add_vacuum_gripper_2:=$(arg add_vacuum_gripper)
     add_other_geometry_1:=$(arg add_other_geometry)
