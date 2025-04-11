@@ -21,6 +21,15 @@
   <arg name="add_gripper" default="false" />
   <!-- VADER End Effector! -->
   <arg name="add_vader_eef" default="true" /> 
+  <arg name="sim_pepper_pose" default="0.0 0.0 0.0 0.0 0.0 0.0"/>
+  <arg name="pepper_x" value="$(eval arg('sim_pepper_pose').split()[0])" />
+  <arg name="pepper_y" value="$(eval arg('sim_pepper_pose').split()[1])" />
+  <arg name="pepper_z" value="$(eval arg('sim_pepper_pose').split()[2])" />
+  <arg name="pepper_R" value="$(eval arg('sim_pepper_pose').split()[3])" />
+  <arg name="pepper_P" value="$(eval arg('sim_pepper_pose').split()[4])" />
+  <arg name="pepper_Y" value="$(eval arg('sim_pepper_pose').split()[5])" />
+  <arg name="pepper_sdf_file" default="$(find xarm_gazebo)/worlds/breakable_pepper.sdf" />
+
   <arg name="add_vacuum_gripper" default="false" />
   <arg name="add_other_geometry" default="false"/>
   <arg name="geometry_type" default="box"/>
@@ -49,7 +58,7 @@
 
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_breakable_pepper.world"/>
+    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_table.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="verbose" value="true"/>
     <arg name="gui" value="$(arg gui)"/>
@@ -116,6 +125,9 @@
     respawn="false" output="screen"
     args="-gazebo_namespace /gazebo -urdf -model DUAL_UF_ROBOT -x 0.5 -y $(arg y) -z 1.021 -Y 1.571 -param robot_description"/>
 
+  <node name="spawn_gazebo_pepper" pkg="gazebo_ros" type="spawn_model"
+      respawn="false" output="screen"
+      args="-gazebo_namespace /gazebo -file $(arg pepper_sdf_file) -sdf -x $(arg pepper_x) -y $(arg pepper_y) -z $(arg pepper_z) -R $(arg pepper_R) -P $(arg pepper_P) -Y $(arg pepper_Y) -model pepper_1"/>
   <!-- load the corresponding controllers -->
   <include file="$(find xarm_controller)/launch/_robot_control.launch">
     <arg name="dof" value="$(arg robot_dof)"/>

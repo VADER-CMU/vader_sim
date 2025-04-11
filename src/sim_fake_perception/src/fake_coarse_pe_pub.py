@@ -82,7 +82,7 @@ def publisher():
         # Create pepper
         pepper = create_pepper(_pepper_pose, fruit_shape, peduncle_shape)
 
-        rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+        # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
         pub.publish(pepper)
         rate.sleep()
 
