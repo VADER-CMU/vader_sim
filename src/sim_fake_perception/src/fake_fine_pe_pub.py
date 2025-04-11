@@ -4,7 +4,6 @@ import rospy
 from geometry_msgs.msg import Pose
 from shape_msgs.msg import SolidPrimitive
 from vader_msgs.msg import Pepper, Fruit, Peduncle
-import random
 from tf.transformations import quaternion_from_euler
 import numpy as np
 
@@ -30,14 +29,15 @@ def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
 
     return pepper
 
-def get_gaussian_xyz_noise(xyz_noise):
-    return np.random.normal(0, xyz_noise, 3)
+def get_gaussian_noise(noise_amplitude):
+    return np.random.normal(0, noise_amplitude, 3)
 
 def publisher():
     rospy.init_node('vader_pepper_publisher', anonymous=True)
     pepper_pose = rospy.get_param('~sim_pepper_pose', "0.0 0.0 0.0 0.0 0.0 0.0")
     pepper_pose = list(map(float, pepper_pose.split(" ")))
     xyz_noise = rospy.get_param('~xyz_noise', "0.01")
+    rpy_noise = rospy.get_param('~rpy_noise', "0.01")
     fruit_shape = rospy.get_param('~fruit_shape', "0.08 0.035")
     fruit_shape = list(map(float, fruit_shape.split(" ")))
     _fruit_shape = SolidPrimitive()
@@ -57,12 +57,8 @@ def publisher():
     gt_pose.position.x = float(pepper_pose[0])
     gt_pose.position.y = float(pepper_pose[1])
     gt_pose.position.z = float(pepper_pose[2])
-
-    # Set the orientation of gt_pose
-    gt_pose.orientation.x = 0.
-    gt_pose.orientation.y = 0.
-    gt_pose.orientation.z = 0.
-    gt_pose.orientation.w = 1.
+    # Convert RPY to quaternion
+    roll, pitch, yaw = float(pepper_pose[3]), float(pepper_pose[4]), float(pepper_pose[5])
 
     print("Coarse fruit pose estimate has ground truth =", gt_pose)
     pub = rospy.Publisher(pub_topic, Pepper, queue_size=10)
@@ -72,17 +68,25 @@ def publisher():
 
     while not rospy.is_shutdown():
         # Add noise to the gt_pose
-        _noise_xyz = get_gaussian_xyz_noise(xyz_noise)
+        _noise_xyz = get_gaussian_noise(xyz_noise)
+        _noise_rpy = get_gaussian_noise(rpy_noise)
         _pepper_pose = Pose()
         _pepper_pose.position.x = gt_pose.position.x + _noise_xyz[0]
         _pepper_pose.position.y = gt_pose.position.y + _noise_xyz[1]
         _pepper_pose.position.z = gt_pose.position.z + _noise_xyz[2]
-        _pepper_pose.orientation = gt_pose.orientation
+        _roll = roll + _noise_rpy[0]
+        _pitch = pitch + _noise_rpy[1]
+        _yaw = yaw + _noise_rpy[2]
 
+        _quaternion = quaternion_from_euler(_roll, _pitch, _yaw)
+        _pepper_pose.orientation.x = _quaternion[0]
+        _pepper_pose.orientation.y = _quaternion[1]
+        _pepper_pose.orientation.z = _quaternion[2]
+        _pepper_pose.orientation.w = _quaternion[3]
         # Create pepper
         pepper = create_pepper(_pepper_pose, fruit_shape, peduncle_shape)
 
-        rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+        rospy.loginfo(f"Publishing Fine Pose Pepper: {pepper}")
         pub.publish(pepper)
         rate.sleep()
 
