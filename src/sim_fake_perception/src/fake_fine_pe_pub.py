@@ -18,7 +18,7 @@ def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
     fruit.shape = fruit_shape
     pepper.fruit_data = fruit
 
-    print("Fruit:", fruit)
+    # print("Fruit:", fruit)
 
     # Create the peduncle
     peduncle = Peduncle()
