@@ -248,6 +248,9 @@
       <disable_collisions link1="fing_1" link2="vader_gripper_base_link" reason="Adjacent" />
       <disable_collisions link1="fing_2" link2="vader_gripper_base_link" reason="Adjacent" />
       <disable_collisions link1="thumb_1" link2="vader_gripper_base_link" reason="Adjacent" />
+      <disable_collisions link1="fing_1" link2="fing_2" reason="Adjacent" />
+      <disable_collisions link1="fing_1" link2="thumb_1" reason="Adjacent" />
+      <disable_collisions link1="fing_2" link2="thumb_1" reason="Adjacent" />
 
     </xacro:if>
     <!-- vader cutter -->
