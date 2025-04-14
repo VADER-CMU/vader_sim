@@ -35,12 +35,12 @@
           <gripper_link>fing_1</gripper_link>
           <gripper_link>fing_2</gripper_link>
         </arm>
-        <forces_angle_tolerance>100</forces_angle_tolerance>
+        <forces_angle_tolerance>110</forces_angle_tolerance>
         <update_rate>10</update_rate>
         <grip_count_threshold>2</grip_count_threshold>
         <max_grip_count>3</max_grip_count>
-        <release_tolerance>0.005</release_tolerance>
-        <disable_collisions_on_attach>false</disable_collisions_on_attach>
+        <release_tolerance>0.03</release_tolerance>
+        <disable_collisions_on_attach>true</disable_collisions_on_attach>
         <contact_topic>__default_topic__</contact_topic>
       </plugin>
     </gazebo>
