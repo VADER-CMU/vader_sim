@@ -4,8 +4,8 @@ import rospy
 from geometry_msgs.msg import Pose
 from shape_msgs.msg import SolidPrimitive
 from vader_msgs.msg import Pepper, Fruit, Peduncle
-from tf.transformations import quaternion_from_euler
 import numpy as np
+from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
 def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
@@ -24,9 +24,26 @@ def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
     peduncle = Peduncle()
     peduncle.shape = peduncle_shape
     peduncle.pose = Pose()
-    peduncle.pose.position.x = fruit_pose.position.x
-    peduncle.pose.position.y = fruit_pose.position.y
-    peduncle.pose.position.z = fruit_pose.position.z + fruit.shape.dimensions[0] / 2 + peduncle.shape.dimensions[0] / 2
+    peduncle_offset = fruit.shape.dimensions[0] / 2 + peduncle.shape.dimensions[0] / 2
+    # Convert fruit_pose.orientation to Euler angles
+    fruit_orientation = fruit_pose.orientation
+
+    # Convert quaternion to rotation matrix and rotate a unit vector
+    unit_vector = np.array([0, 0, peduncle_offset])  # Example unit vector along z-axis
+    quaternion = [
+        fruit_orientation.x,
+        fruit_orientation.y,
+        fruit_orientation.z,
+        fruit_orientation.w,
+    ]
+    rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
+
+    # print(rotated_vector) #0, -0.055, 0
+
+
+    peduncle.pose.position.x = fruit_pose.position.x + rotated_vector[1]
+    peduncle.pose.position.y = fruit_pose.position.y + rotated_vector[0]
+    peduncle.pose.position.z = fruit_pose.position.z + rotated_vector[2]
     peduncle.pose.orientation.x = fruit_pose.orientation.x
     peduncle.pose.orientation.y = fruit_pose.orientation.y
     peduncle.pose.orientation.z = fruit_pose.orientation.z
