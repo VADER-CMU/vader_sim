@@ -22,11 +22,17 @@ def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
 
     # Create the peduncle
     peduncle = Peduncle()
-    peduncle.pose = fruit_pose
     peduncle.shape = peduncle_shape
+    peduncle.pose = Pose()
+    peduncle.pose.position.x = fruit_pose.position.x
+    peduncle.pose.position.y = fruit_pose.position.y
     peduncle.pose.position.z = fruit_pose.position.z + fruit.shape.dimensions[0] / 2 + peduncle.shape.dimensions[0] / 2
-    pepper.peduncle_data = peduncle
+    peduncle.pose.orientation.x = fruit_pose.orientation.x
+    peduncle.pose.orientation.y = fruit_pose.orientation.y
+    peduncle.pose.orientation.z = fruit_pose.orientation.z
+    peduncle.pose.orientation.w = fruit_pose.orientation.w
 
+    pepper.peduncle_data = peduncle
     return pepper
 
 def get_gaussian_noise(noise_amplitude):
@@ -51,7 +57,7 @@ def publisher():
     _peduncle_shape.dimensions = peduncle_shape
     peduncle_shape = _peduncle_shape
     pub_hz = rospy.get_param('~pub_hz', "10")
-    pub_topic = rospy.get_param('~pub_topic', "/fruit_coarse_pose")
+    pub_topic = rospy.get_param('~pub_topic', "/fruit_fine_pose")
 
     gt_pose = Pose()
     gt_pose.position.x = float(pepper_pose[0])

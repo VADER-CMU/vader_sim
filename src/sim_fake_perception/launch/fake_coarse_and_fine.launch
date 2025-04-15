@@ -1,9 +1,9 @@
 <launch>
     <arg name="sim_pepper_pose" default="0.0 0.0 0.0 0.0 0.0 0.0"/>
     <arg name="fruit_shape" default="0.08 0.035"/>
-    <arg name="peduncle_shape" default="0.02 0.002"/>
+    <arg name="peduncle_shape" default="0.03 0.002"/>
     <arg name="xyz_noise_coarse" default="0.01"/>
-    <arg name="xyz_noise_fine" default="0.01"/>
+    <arg name="xyz_noise_fine" default="0.0"/>
     <arg name="rpy_noise_fine" default="0.01"/>
     <arg name="pub_hz" default="10"/>
     <arg name="pub_topic_coarse" default="/fruit_coarse_pose"/>
