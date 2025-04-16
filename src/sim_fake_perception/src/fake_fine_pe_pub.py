@@ -11,7 +11,7 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
     pepper.header.stamp = rospy.Time.now()
     pepper.header.frame_id = "link_base"
-    fruit_down_offset = ( fruit_shape.dimensions[0] / 2 + peduncle_shape.dimensions[0] / 2)
+    fruit_down_offset = -( fruit_shape.dimensions[0] / 2 + peduncle_shape.dimensions[0] / 2) - 0.01
 
 
     # Create the fruit
@@ -19,7 +19,7 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     fruit.pose = Pose()
     fruit.pose.position.x = peduncle_pose.position.x
     fruit.pose.position.y = peduncle_pose.position.y
-    fruit.pose.position.z = peduncle_pose.position.z - fruit_down_offset
+    fruit.pose.position.z = peduncle_pose.position.z
     fruit.pose.orientation.x = peduncle_pose.orientation.x
     fruit.pose.orientation.y = peduncle_pose.orientation.y
     fruit.pose.orientation.z = peduncle_pose.orientation.z
@@ -37,17 +37,18 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     # fruit_orientation = fruit_pose.orientation
 
     # # Convert quaternion to rotation matrix and rotate a unit vector
-    # unit_vector = np.array([0, 0, peduncle_offset])  # Example unit vector along z-axis
-    # quaternion = [
-    #     fruit_orientation.x,
-    #     fruit_orientation.y,
-    #     fruit_orientation.z,
-    #     fruit_orientation.w,
-    # ]
-    # rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
+    unit_vector = np.array([0, 0, 1])  # Example unit vector along z-axis
+    quaternion = [
+        fruit.pose.orientation.x,
+        fruit.pose.orientation.y,
+        fruit.pose.orientation.z,
+        fruit.pose.orientation.w
+    ]
+    rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector) * fruit_down_offset
 
-    # # print(rotated_vector) #0, -0.055, 0
-
+    fruit.pose.position.x += rotated_vector[1]
+    fruit.pose.position.y += rotated_vector[0]
+    fruit.pose.position.z += rotated_vector[2]
 
     peduncle.pose.position.x = peduncle_pose.position.x 
     peduncle.pose.position.y = peduncle_pose.position.y 
