@@ -7,14 +7,23 @@ from vader_msgs.msg import Pepper, Fruit, Peduncle
 import numpy as np
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
-def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
+def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
     pepper.header.stamp = rospy.Time.now()
     pepper.header.frame_id = "link_base"
+    fruit_down_offset = ( fruit_shape.dimensions[0] / 2 + peduncle_shape.dimensions[0] / 2)
+
 
     # Create the fruit
     fruit = Fruit()
-    fruit.pose = fruit_pose
+    fruit.pose = Pose()
+    fruit.pose.position.x = peduncle_pose.position.x
+    fruit.pose.position.y = peduncle_pose.position.y
+    fruit.pose.position.z = peduncle_pose.position.z - fruit_down_offset
+    fruit.pose.orientation.x = peduncle_pose.orientation.x
+    fruit.pose.orientation.y = peduncle_pose.orientation.y
+    fruit.pose.orientation.z = peduncle_pose.orientation.z
+    fruit.pose.orientation.w = peduncle_pose.orientation.w
     fruit.shape = fruit_shape
     pepper.fruit_data = fruit
 
@@ -24,30 +33,29 @@ def create_pepper(fruit_pose, fruit_shape, peduncle_shape):
     peduncle = Peduncle()
     peduncle.shape = peduncle_shape
     peduncle.pose = Pose()
-    peduncle_offset = fruit.shape.dimensions[0] / 2 + peduncle.shape.dimensions[0] / 2
-    # Convert fruit_pose.orientation to Euler angles
-    fruit_orientation = fruit_pose.orientation
+    # # Convert fruit_pose.orientation to Euler angles
+    # fruit_orientation = fruit_pose.orientation
 
-    # Convert quaternion to rotation matrix and rotate a unit vector
-    unit_vector = np.array([0, 0, peduncle_offset])  # Example unit vector along z-axis
-    quaternion = [
-        fruit_orientation.x,
-        fruit_orientation.y,
-        fruit_orientation.z,
-        fruit_orientation.w,
-    ]
-    rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
+    # # Convert quaternion to rotation matrix and rotate a unit vector
+    # unit_vector = np.array([0, 0, peduncle_offset])  # Example unit vector along z-axis
+    # quaternion = [
+    #     fruit_orientation.x,
+    #     fruit_orientation.y,
+    #     fruit_orientation.z,
+    #     fruit_orientation.w,
+    # ]
+    # rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
 
-    # print(rotated_vector) #0, -0.055, 0
+    # # print(rotated_vector) #0, -0.055, 0
 
 
-    peduncle.pose.position.x = fruit_pose.position.x + rotated_vector[1]
-    peduncle.pose.position.y = fruit_pose.position.y + rotated_vector[0]
-    peduncle.pose.position.z = fruit_pose.position.z + rotated_vector[2]
-    peduncle.pose.orientation.x = fruit_pose.orientation.x
-    peduncle.pose.orientation.y = fruit_pose.orientation.y
-    peduncle.pose.orientation.z = fruit_pose.orientation.z
-    peduncle.pose.orientation.w = fruit_pose.orientation.w
+    peduncle.pose.position.x = peduncle_pose.position.x 
+    peduncle.pose.position.y = peduncle_pose.position.y 
+    peduncle.pose.position.z = peduncle_pose.position.z
+    peduncle.pose.orientation.x = peduncle_pose.orientation.x
+    peduncle.pose.orientation.y = peduncle_pose.orientation.y
+    peduncle.pose.orientation.z = peduncle_pose.orientation.z
+    peduncle.pose.orientation.w = peduncle_pose.orientation.w
 
     pepper.peduncle_data = peduncle
     return pepper
@@ -93,21 +101,21 @@ def publisher():
         # Add noise to the gt_pose
         _noise_xyz = get_gaussian_noise(xyz_noise)
         _noise_rpy = get_gaussian_noise(rpy_noise)
-        _pepper_pose = Pose()
-        _pepper_pose.position.x = gt_pose.position.x + _noise_xyz[0]
-        _pepper_pose.position.y = gt_pose.position.y + _noise_xyz[1]
-        _pepper_pose.position.z = gt_pose.position.z + _noise_xyz[2]
+        peduncle_pose = Pose()
+        peduncle_pose.position.x = gt_pose.position.x + _noise_xyz[0]
+        peduncle_pose.position.y = gt_pose.position.y + _noise_xyz[1]
+        peduncle_pose.position.z = gt_pose.position.z + _noise_xyz[2]
         _roll = roll + _noise_rpy[0]
         _pitch = pitch + _noise_rpy[1]
         _yaw = yaw + _noise_rpy[2]
 
         _quaternion = quaternion_from_euler(_roll, _pitch, _yaw)
-        _pepper_pose.orientation.x = _quaternion[0]
-        _pepper_pose.orientation.y = _quaternion[1]
-        _pepper_pose.orientation.z = _quaternion[2]
-        _pepper_pose.orientation.w = _quaternion[3]
+        peduncle_pose.orientation.x = _quaternion[0]
+        peduncle_pose.orientation.y = _quaternion[1]
+        peduncle_pose.orientation.z = _quaternion[2]
+        peduncle_pose.orientation.w = _quaternion[3]
         # Create pepper
-        pepper = create_pepper(_pepper_pose, fruit_shape, peduncle_shape)
+        pepper = create_pepper(peduncle_pose, fruit_shape, peduncle_shape)
 
         # rospy.loginfo(f"Publishing Fine Pose Pepper: {pepper}")
         pub.publish(pepper)
