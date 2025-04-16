@@ -13,7 +13,6 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     pepper.header.frame_id = "link_base"
     fruit_down_offset = -( fruit_shape.dimensions[0] / 2 + peduncle_shape.dimensions[0] / 2) - 0.01
 
-
     # Create the fruit
     fruit = Fruit()
     fruit.pose = Pose()
@@ -33,21 +32,18 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     peduncle = Peduncle()
     peduncle.shape = peduncle_shape
     peduncle.pose = Pose()
-    # # Convert fruit_pose.orientation to Euler angles
-    # fruit_orientation = fruit_pose.orientation
-
-    # # Convert quaternion to rotation matrix and rotate a unit vector
-    unit_vector = np.array([0, 0, 1])  # Example unit vector along z-axis
+    unit_vector = np.array([0, 0, fruit_down_offset])  # Example unit vector along z-axis
     quaternion = [
         fruit.pose.orientation.x,
         fruit.pose.orientation.y,
         fruit.pose.orientation.z,
         fruit.pose.orientation.w
     ]
-    rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector) * fruit_down_offset
+    rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
 
-    fruit.pose.position.x += rotated_vector[1]
-    fruit.pose.position.y += rotated_vector[0]
+    # print(rotated_vector)
+    fruit.pose.position.x += rotated_vector[1] 
+    fruit.pose.position.y -= rotated_vector[0]
     fruit.pose.position.z += rotated_vector[2]
 
     peduncle.pose.position.x = peduncle_pose.position.x 
@@ -57,6 +53,9 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     peduncle.pose.orientation.y = peduncle_pose.orientation.y
     peduncle.pose.orientation.z = peduncle_pose.orientation.z
     peduncle.pose.orientation.w = peduncle_pose.orientation.w
+
+    # print("Peduncle:", peduncle.pose.position)
+    # print("Fruit:", fruit.pose.position)
 
     pepper.peduncle_data = peduncle
     return pepper
