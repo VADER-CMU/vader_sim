@@ -91,7 +91,7 @@ def publisher():
     # Convert RPY to quaternion
     roll, pitch, yaw = float(pepper_pose[3]), float(pepper_pose[4]), float(pepper_pose[5])
 
-    print("Coarse fruit pose estimate has ground truth =", gt_pose)
+    print("Fine fruit pose estimate has ground truth =", pepper_pose)
     pub = rospy.Publisher(pub_topic, Pepper, queue_size=10)
     rate = rospy.Rate(pub_hz) 
 
