@@ -38,13 +38,13 @@ def get_gaussian_xyz_noise(xyz_noise):
 def _get_sim_pepper_sequence(data):
     global pepper_sequence
     pepper_sequence = data.pepper_poses
-    print("peppers:", pepper_sequence)
+    # print("peppers:", pepper_sequence)
 
 def _pop_current_pepper(data):
     global pepper_sequence
     if len(pepper_sequence) > 0:
         pepper_sequence.pop(0)
-        print("popped")
+        # print("popped")
 
 def publisher():
     rospy.init_node('vader_pepper_publisher', anonymous=True)
@@ -82,7 +82,7 @@ def publisher():
         _noise_xyz = get_gaussian_xyz_noise(xyz_noise)
         _pepper_pose = Pose()
         if pepper_sequence is None or len(pepper_sequence) == 0:
-            rospy.loginfo("No pepper sequence available")
+            rospy.loginfo("No pepper sequence available, exiting")
             break
         _pepper_pose.position.x = pepper_sequence[0].position.x + _noise_xyz[0]
         _pepper_pose.position.y = pepper_sequence[0].position.y + _noise_xyz[1]
@@ -95,7 +95,7 @@ def publisher():
         # Create pepper
         pepper = create_pepper(_pepper_pose, fruit_shape, peduncle_shape)
 
-        rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+        # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
         pub.publish(pepper)
         rate.sleep()
 
