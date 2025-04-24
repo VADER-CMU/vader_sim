@@ -67,6 +67,7 @@ def publisher():
     peduncle_shape = _peduncle_shape
     pub_hz = rospy.get_param('~pub_hz', "10")
     pub_topic = rospy.get_param('~pub_topic', "/fruit_coarse_pose")
+    pub_all_coarse_topic = rospy.Publisher("/fruit_coarse_pose_remaining", SimulationPepperSequence, queue_size=10)
 
     global pepper_sequence
     while pepper_sequence is None:
@@ -97,6 +98,24 @@ def publisher():
 
         # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
         pub.publish(pepper)
+        
+        remaining_peppers = []
+        # Publish remaining peppers in queue
+        for i in range(1, len(pepper_sequence)):
+            #_noise_xyz = get_gaussian_xyz_noise(xyz_noise)
+            _pepper_pose = Pose()
+            _pepper_pose.position.x = -pepper_sequence[i].position.y #+ _noise_xyz[0] # due to thing in HRI that flips these polarities. Need to fix after 
+            _pepper_pose.position.y = pepper_sequence[i].position.x #+ _noise_xyz[1]
+            _pepper_pose.position.z = pepper_sequence[i].position.z #+ _noise_xyz[2]
+            _pepper_pose.orientation.x = 0.
+            _pepper_pose.orientation.y = 0.
+            _pepper_pose.orientation.z = 0.
+            _pepper_pose.orientation.w = 1.
+
+            # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+            remaining_peppers.append(_pepper_pose)
+        # print("Remaining Peppers:", len(remaining_peppers))
+        pub_all_coarse_topic.publish(remaining_peppers)
         rate.sleep()
 
 if __name__ == '__main__':
