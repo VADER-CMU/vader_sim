@@ -3,14 +3,10 @@
   <world name="default">
     <include>
       <uri>model://ground_plane</uri>
+      <pose>0 0 -1 0 0 0</pose>
     </include>
     <include>
       <uri>model://sun</uri>
-    </include>
-    <include>
-      <uri>model://table</uri>
-      <name>table</name>
-      <pose>0.0 -0.84 0 0 0 0</pose>
     </include>
 
     <physics type="ode" update_rate="100.0">
