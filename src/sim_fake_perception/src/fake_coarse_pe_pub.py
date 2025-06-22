@@ -104,8 +104,8 @@ def publisher():
         for i in range(1, len(pepper_sequence)):
             #_noise_xyz = get_gaussian_xyz_noise(xyz_noise)
             _pepper_pose = Pose()
-            _pepper_pose.position.x = -pepper_sequence[i].position.y #+ _noise_xyz[0] # due to thing in HRI that flips these polarities. Need to fix after 
-            _pepper_pose.position.y = pepper_sequence[i].position.x #+ _noise_xyz[1]
+            _pepper_pose.position.x = pepper_sequence[i].position.x #+ _noise_xyz[0] # due to thing in HRI that flips these polarities. Need to fix after 
+            _pepper_pose.position.y = pepper_sequence[i].position.y #+ _noise_xyz[1]
             _pepper_pose.position.z = pepper_sequence[i].position.z #+ _noise_xyz[2]
             _pepper_pose.orientation.x = 0.
             _pepper_pose.orientation.y = 0.

@@ -61,7 +61,7 @@
 
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find xarm_gazebo)/worlds/xarm_example1_table.world"/>
+    <arg name="world_name" value="$(find xarm_gazebo)/worlds/vader.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="verbose" value="true"/>
     <arg name="gui" value="$(arg gui)"/>
@@ -124,14 +124,13 @@
     "/>
 
   <!-- spawn robot model in gazebo, located on the table, -gazebo_namespace defaults to be /gazebo -->
-  <arg name="y" value="$(eval -0.54 if arg('robot_type') == 'uf850' else -0.504)"/>
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
     respawn="false" output="screen"
-    args="-gazebo_namespace /gazebo -urdf -model DUAL_UF_ROBOT -x 0.5 -y $(arg y) -z 1.021 -Y 1.571 -param robot_description"/>
+    args="-gazebo_namespace /gazebo -urdf -model DUAL_UF_ROBOT -param robot_description"/>
 
-  <!-- <node name="spawn_gazebo_pepper" pkg="gazebo_ros" type="spawn_model"
+  <node name="spawn_gazebo_pepper" pkg="gazebo_ros" type="spawn_model"
       respawn="false" output="screen"
-      args="-gazebo_namespace /gazebo -file $(arg pepper_sdf_file) -sdf -x $(arg pepper_x) -y $(arg pepper_y) -z $(arg pepper_z) -R $(arg pepper_R) -P $(arg pepper_P) -Y $(arg pepper_Y) -model pepper_1"/> -->
+      args="-gazebo_namespace /gazebo -file $(arg pepper_sdf_file) -sdf -x $(arg pepper_x) -y $(arg pepper_y) -z $(arg pepper_z) -R $(arg pepper_R) -P $(arg pepper_P) -Y $(arg pepper_Y) -model pepper_1"/>
   <!-- load the corresponding controllers -->
   <include file="$(find xarm_controller)/launch/_robot_control.launch">
     <arg name="dof" value="$(arg robot_dof)"/>
