@@ -45,8 +45,8 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     rotated_vector = quaternion_matrix(quaternion)[:3, :3].dot(unit_vector)
 
     # print(rotated_vector)
-    fruit.pose.position.x += rotated_vector[1] 
-    fruit.pose.position.y -= rotated_vector[0]
+    fruit.pose.position.x += rotated_vector[0] 
+    fruit.pose.position.y += rotated_vector[1]
     fruit.pose.position.z += rotated_vector[2]
 
     peduncle.pose.position.x = peduncle_pose.position.x 
