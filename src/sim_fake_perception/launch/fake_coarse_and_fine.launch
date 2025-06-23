@@ -9,21 +9,15 @@
     <arg name="pub_topic_coarse" default="/fruit_coarse_pose"/>
     <arg name="pub_topic_fine" default="/fruit_fine_pose"/>
 
-    <include file="$(find sim_fake_perception)/launch/fake_coarse.launch">
-        <arg name="sim_pepper_pose" value="$(arg sim_pepper_pose)" />
-        <arg name="xyz_noise" value="$(arg xyz_noise_coarse)" />
-        <arg name="pub_hz" value="$(arg pub_hz)" />
-        <arg name="fruit_shape" value="$(arg fruit_shape)" />
-        <arg name="peduncle_shape" value="$(arg peduncle_shape)" />
-        <arg name="pub_topic" value="$(arg pub_topic_coarse)" />
-    </include>
-    <include file="$(find sim_fake_perception)/launch/fake_fine.launch">
-        <arg name="sim_pepper_pose" value="$(arg sim_pepper_pose)" />
-        <arg name="xyz_noise" value="$(arg xyz_noise_fine)" />
-        <arg name="rpy_noise" value="$(arg rpy_noise_fine)" />
-        <arg name="pub_hz" value="$(arg pub_hz)" />
-        <arg name="fruit_shape" value="$(arg fruit_shape)" />
-        <arg name="peduncle_shape" value="$(arg peduncle_shape)" />
-        <arg name="pub_topic" value="$(arg pub_topic_fine)" />
-    </include>
+    <node pkg="sim_fake_perception" type="fake_coarse_pe_pub.py" name="fake_coarse_pe_pub" output="screen">
+        <param name="sim_pepper_pose" value="$(arg sim_pepper_pose)" />
+        <param name="xyz_noise_coarse" value="$(arg xyz_noise_coarse)" />
+        <param name="xyz_noise_fine" value="$(arg xyz_noise_fine)" />
+        <param name="rpy_noise_fine" value="$(arg rpy_noise_fine)" />
+        <param name="pub_hz" value="$(arg pub_hz)" />
+        <param name="fruit_shape" value="$(arg fruit_shape)" />
+        <param name="peduncle_shape" value="$(arg peduncle_shape)" />
+        <param name="pub_topic_coarse" value="$(arg pub_topic_coarse)" />
+        <param name="pub_topic_fine" value="$(arg pub_topic_fine)" />
+    </node>
 </launch>
