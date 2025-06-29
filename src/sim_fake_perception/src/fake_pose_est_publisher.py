@@ -10,7 +10,7 @@ from tf.transformations import euler_from_quaternion, quaternion_from_euler, qua
 
 pepper_sequence = None
 
-def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
+def create_pepper_fine(peduncle_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
     pepper.header.stamp = rospy.Time.now()
     pepper.header.frame_id = "link_base"
@@ -63,6 +63,28 @@ def create_pepper(peduncle_pose, fruit_shape, peduncle_shape):
     pepper.peduncle_data = peduncle
     return pepper
 
+def create_pepper_coarse(fruit_pose, fruit_shape, peduncle_shape):
+    pepper = Pepper()
+    pepper.header.stamp = rospy.Time.now()
+    pepper.header.frame_id = "link_base"
+
+    # Create the fruit
+    fruit = Fruit()
+    fruit.pose = fruit_pose
+    fruit.shape = fruit_shape
+    pepper.fruit_data = fruit
+
+    # print("Fruit:", fruit)
+
+    # Create the peduncle
+    peduncle = Peduncle()
+    peduncle.pose = fruit_pose
+    peduncle.shape = peduncle_shape
+    peduncle.pose.position.z = fruit_pose.position.z + fruit.shape.dimensions[0] / 2 + peduncle.shape.dimensions[0] / 2
+    pepper.peduncle_data = peduncle
+
+    return pepper
+
 def get_gaussian_noise(noise_amplitude):
     return np.random.normal(0, noise_amplitude, 3)
 
@@ -84,7 +106,8 @@ def publisher():
 
     pepper_seq_sub = rospy.Subscriber("/pepper_sequence", SimulationPepperSequence, _get_sim_pepper_sequence)
     pepper_pop_sub = rospy.Subscriber("/pepper_pop", SimulationPopPepper, _pop_current_pepper)
-    xyz_noise = rospy.get_param('~xyz_noise', "0.01")
+    xyz_noise_coarse = rospy.get_param('~xyz_noise_coarse', "0.01")
+    xyz_noise_fine = rospy.get_param('~xyz_noise_fine', "0.01")
     rpy_noise = rospy.get_param('~rpy_noise', "0.01")
     fruit_shape = rospy.get_param('~fruit_shape', "0.08 0.035")
     fruit_shape = list(map(float, fruit_shape.split(" ")))
@@ -99,28 +122,31 @@ def publisher():
     _peduncle_shape.dimensions = peduncle_shape
     peduncle_shape = _peduncle_shape
     pub_hz = rospy.get_param('~pub_hz', "10")
-    pub_topic = rospy.get_param('~pub_topic', "/fruit_fine_pose")
+    pub_topic_fine = rospy.get_param('~pub_topic', "/fruit_fine_pose")
+    pub_topic_coarse = rospy.get_param('~pub_topic_coarse', "/fruit_coarse_pose")
+    pub_all_coarse_topic = rospy.Publisher("/fruit_coarse_pose_remaining", SimulationPepperSequence, queue_size=10)
 
     global pepper_sequence
     while pepper_sequence is None:
         rospy.sleep(0.1)
 
-    pub = rospy.Publisher(pub_topic, Pepper, queue_size=10)
+    pub_fine = rospy.Publisher(pub_topic_fine, Pepper, queue_size=10)
+    pub_coarse = rospy.Publisher(pub_topic_coarse, Pepper, queue_size=10)
     rate = rospy.Rate(pub_hz) 
 
     rospy.sleep(1) # Wait for the publisher to be registered
 
     while not rospy.is_shutdown():
         # Add noise to the gt_pose
-        _noise_xyz = get_gaussian_noise(xyz_noise)
+        _noise_xyz_fine = get_gaussian_noise(xyz_noise_fine)
         _noise_rpy = get_gaussian_noise(rpy_noise)
         if pepper_sequence is None or len(pepper_sequence) == 0:
             rospy.loginfo("No pepper sequence available, exiting")
             break
         peduncle_pose = Pose()
-        peduncle_pose.position.x = pepper_sequence[0].position.x + _noise_xyz[0]
-        peduncle_pose.position.y = pepper_sequence[0].position.y + _noise_xyz[1]
-        peduncle_pose.position.z = pepper_sequence[0].position.z + _noise_xyz[2]
+        peduncle_pose.position.x = pepper_sequence[0].position.x + _noise_xyz_fine[0]
+        peduncle_pose.position.y = pepper_sequence[0].position.y + _noise_xyz_fine[1]
+        peduncle_pose.position.z = pepper_sequence[0].position.z + _noise_xyz_fine[2]
         roll, pitch, yaw = euler_from_quaternion([
             pepper_sequence[0].orientation.x,
             pepper_sequence[0].orientation.y,
@@ -137,10 +163,47 @@ def publisher():
         peduncle_pose.orientation.z = _quaternion[2]
         peduncle_pose.orientation.w = _quaternion[3]
         # Create pepper
-        pepper = create_pepper(peduncle_pose, fruit_shape, peduncle_shape)
+        pepper = create_pepper_fine(peduncle_pose, fruit_shape, peduncle_shape)
 
         # rospy.loginfo(f"Publishing Fine Pose Pepper: {pepper}")
-        pub.publish(pepper)
+        pub_fine.publish(pepper)
+        # Add noise to the gt_pose
+        _noise_xyz_coarse = get_gaussian_noise(xyz_noise_coarse)
+        _pepper_pose_coarse = Pose()
+        if pepper_sequence is None or len(pepper_sequence) == 0:
+            rospy.loginfo("No pepper sequence available, exiting")
+            break
+        _pepper_pose_coarse.position.x = pepper_sequence[0].position.x + _noise_xyz_coarse[0]
+        _pepper_pose_coarse.position.y = pepper_sequence[0].position.y + _noise_xyz_coarse[1]
+        _pepper_pose_coarse.position.z = pepper_sequence[0].position.z + _noise_xyz_coarse[2]
+        _pepper_pose_coarse.orientation.x = 0.
+        _pepper_pose_coarse.orientation.y = 0.
+        _pepper_pose_coarse.orientation.z = 0.
+        _pepper_pose_coarse.orientation.w = 1.
+
+        # Create pepper
+        pepper = create_pepper_coarse(_pepper_pose_coarse, fruit_shape, peduncle_shape)
+
+        # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+        pub_coarse.publish(pepper)
+        
+        remaining_peppers = []
+        # Publish remaining peppers in queue
+        for i in range(1, len(pepper_sequence)):
+            #_noise_xyz = get_gaussian_xyz_noise(xyz_noise)
+            _pepper_pose_coarse = Pose()
+            _pepper_pose_coarse.position.x = pepper_sequence[i].position.x #+ _noise_xyz[0] # due to thing in HRI that flips these polarities. Need to fix after 
+            _pepper_pose_coarse.position.y = pepper_sequence[i].position.y #+ _noise_xyz[1]
+            _pepper_pose_coarse.position.z = pepper_sequence[i].position.z #+ _noise_xyz[2]
+            _pepper_pose_coarse.orientation.x = 0.
+            _pepper_pose_coarse.orientation.y = 0.
+            _pepper_pose_coarse.orientation.z = 0.
+            _pepper_pose_coarse.orientation.w = 1.
+
+            # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
+            remaining_peppers.append(_pepper_pose_coarse)
+        # print("Remaining Peppers:", len(remaining_peppers))
+        pub_all_coarse_topic.publish(remaining_peppers)
         rate.sleep()
 
 if __name__ == '__main__':
