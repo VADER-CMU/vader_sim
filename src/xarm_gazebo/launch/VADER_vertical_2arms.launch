@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="paused" default="false" doc="Starts gazebo in paused mode" />
+  <arg name="gui" default="true" doc="Starts gazebo gui" />
+
+  <arg name="dof" default="7" />
+  <arg name="robot_type" default="xarm" />
+  <arg name="robot_sn" default="" />
+  <arg name="model1300" default="false" />
+  <arg name="limited" default="true" />
+  <arg name="hw_ns" default="xarm"/>
+  <arg name="velocity_control" default="false"/>
+  <arg name="effort_control" default="false"/>
+
+  <arg name="attach_to" default="world" />
+  <arg name="attach_xyz" default="'0 0 0'" />
+  <arg name="attach_rpy" default="'0 0 0'" />
+
+  <arg name="add_realsense_d435i" default="false" />
+  <arg name="add_d435i_links" default="false" />
+  <arg name="add_gripper" default="false" />
+  <!-- VADER End Effector! -->
+  <arg name="add_vader_eef" default="true" /> 
+  <arg name="sim_pepper_pose" default="0.0 0.0 0.0 0.0 0.0 0.0"/>
+  <arg name="arm_spacing" default="0.5"/>
+  <arg name="pepper_x" value="$(eval arg('sim_pepper_pose').split()[0])" />
+  <arg name="pepper_y" value="$(eval arg('sim_pepper_pose').split()[1])" />
+  <arg name="pepper_z" value="$(eval arg('sim_pepper_pose').split()[2])" />
+  <arg name="pepper_R" value="$(eval arg('sim_pepper_pose').split()[3])" />
+  <arg name="pepper_P" value="$(eval arg('sim_pepper_pose').split()[4])" />
+  <arg name="pepper_Y" value="$(eval arg('sim_pepper_pose').split()[5])" />
+  <arg name="pepper_sdf_file" default="$(find xarm_gazebo)/worlds/breakable_pepper.sdf" />
+
+  <arg name="bin_xyz" default="0.0 -0.3 0.0"/>
+  <arg name="_bin_xyz" value="'$(arg bin_xyz)'" />
+
+  <arg name="add_vacuum_gripper" default="false" />
+  <arg name="add_other_geometry" default="false"/>
+  <arg name="geometry_type" default="box"/>
+  <arg name="geometry_mass" default="0.1"/>
+  <arg name="geometry_height" default="0.1"/>
+  <arg name="geometry_radius" default="0.1"/>
+  <arg name="geometry_length" default="0.1"/>
+  <arg name="geometry_width" default="0.1"/>
+  <arg name="geometry_mesh_filename" default=""/>
+  <arg name="geometry_mesh_origin_xyz" default="'0 0 0'"/>
+  <arg name="geometry_mesh_origin_rpy" default="'0 0 0'"/>
+  <arg name="geometry_mesh_tcp_xyz" default="'0 0 0'"/>
+  <arg name="geometry_mesh_tcp_rpy" default="'0 0 0'"/>
+
+  <arg name="kinematics_suffix_1" default=""/>
+  <arg name="kinematics_suffix_2" default=""/>
+  
+  <arg name="robot_dof" value="$(eval arg('dof') if arg('robot_type') == 'xarm' else 6)" />
+  <!-- <arg name="robot_name" value="$(eval 'dual_uf850' if arg('robot_type') == 'uf850' else 'dual_' + arg('robot_type') + str(arg('robot_dof')))" /> -->
+  <arg name="robot_name" value="$(eval 'uf850' if arg('robot_type') == 'uf850' else arg('robot_type') + str(arg('robot_dof')))" />
+
+  <!-- <rosparam file="$(find uf_robot_moveit_config)/config/$(arg robot_name)/$(arg robot_name)_params.yaml" command="load" ns="$(arg hw_ns)"/> -->
+  <rosparam if="$(eval arg('add_gripper') and arg('robot_type') != 'lite')" file="$(find xarm_controller)/config/gripper/dual_gripper_gazebo_ros_control.yaml" command="load"/>
+  <rosparam if="$(arg add_vader_eef)" file="$(find xarm_controller)/config/vader_eef/cutter_gazebo_ros_control.yaml" command="load"/>
+  <rosparam if="$(arg add_vader_eef)" file="$(find xarm_controller)/config/vader_eef/gripper_gazebo_ros_control.yaml" command="load"/>
+
+  <!-- startup simulated world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find xarm_gazebo)/worlds/vader.world"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="verbose" value="true"/>
+    <arg name="gui" value="$(arg gui)"/>
+  </include>
+
+  <!-- send robot urdf to param server, joint limit may be overwritten if use moveit planner -->
+  <param name="robot_description" command="$(find xacro)/xacro
+    --inorder '$(find xarm_description)/urdf/dual_xarm_device.urdf.xacro' 
+    dof_1:=$(arg dof)
+    dof_2:=$(arg dof)
+    robot_type_1:=$(arg robot_type) 
+    robot_type_2:=$(arg robot_type) 
+    robot_sn_1:=$(arg robot_sn)
+    robot_sn_2:=$(arg robot_sn)
+    hw_ns:=$(arg hw_ns)
+    limited:=$(arg limited)
+    kinematics_suffix_1:=$(arg kinematics_suffix_1)
+    kinematics_suffix_2:=$(arg kinematics_suffix_2)
+    model1300_1:=$(arg model1300)
+    model1300_2:=$(arg model1300)
+    effort_control:=$(arg effort_control) 
+    velocity_control:=$(arg velocity_control)
+    add_realsense_d435i_1:=$(arg add_realsense_d435i)
+    add_realsense_d435i_2:=$(arg add_realsense_d435i)
+    add_d435i_links_1:=$(arg add_d435i_links)
+    add_d435i_links_2:=$(arg add_d435i_links)
+    add_gripper_1:=$(arg add_gripper)
+    add_gripper_2:=$(arg add_gripper)
+    add_vader_gripper_1:=$(arg add_vader_eef)
+    add_vader_gripper_2:=false
+    add_vader_cutter_1:=false
+    add_vader_cutter_2:=$(arg add_vader_eef)
+    bin_xyz:=$(arg _bin_xyz)
+    arm_spacing:=$(arg arm_spacing)
+    horizontal_mount_arms:=false
+    "/>
+
+  <!-- spawn robot model in gazebo, located on the table, -gazebo_namespace defaults to be /gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model"
+    respawn="false" output="screen"
+    args="-gazebo_namespace /gazebo -urdf -model DUAL_UF_ROBOT -param robot_description"/>
+
+  <node name="spawn_gazebo_pepper" pkg="gazebo_ros" type="spawn_model"
+      respawn="false" output="screen"
+      args="-gazebo_namespace /gazebo -file $(arg pepper_sdf_file) -sdf -x $(arg pepper_x) -y $(arg pepper_y) -z $(arg pepper_z) -R $(arg pepper_R) -P $(arg pepper_P) -Y $(arg pepper_Y) -model pepper_1"/>
+  <!-- load the corresponding controllers -->
+  <include file="$(find xarm_controller)/launch/_robot_control.launch">
+    <arg name="dof" value="$(arg robot_dof)"/>
+    <arg name="robot_type" value="$(arg robot_type)"/>
+    <arg name="effort_control" value="$(arg effort_control)"/>
+    <arg name="velocity_control" value="$(arg velocity_control)"/>
+    <arg name="add_gripper" value="$(arg add_gripper)" />
+    <arg name="add_vader_eef" value="$(arg add_vader_eef)" />
+    <arg name="hw_ns" value="$(arg hw_ns)" />
+    <arg name="dual" value="true" />
+  </include>
+
+
+</launch>

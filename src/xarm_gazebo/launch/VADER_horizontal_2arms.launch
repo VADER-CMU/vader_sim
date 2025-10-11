@@ -22,6 +22,7 @@
   <!-- VADER End Effector! -->
   <arg name="add_vader_eef" default="true" /> 
   <arg name="sim_pepper_pose" default="0.0 0.0 0.0 0.0 0.0 0.0"/>
+  <arg name="arm_spacing" default="0.5"/>
   <arg name="pepper_x" value="$(eval arg('sim_pepper_pose').split()[0])" />
   <arg name="pepper_y" value="$(eval arg('sim_pepper_pose').split()[1])" />
   <arg name="pepper_z" value="$(eval arg('sim_pepper_pose').split()[2])" />
@@ -30,7 +31,7 @@
   <arg name="pepper_Y" value="$(eval arg('sim_pepper_pose').split()[5])" />
   <arg name="pepper_sdf_file" default="$(find xarm_gazebo)/worlds/breakable_pepper.sdf" />
 
-  <arg name="bin_xyz" default="0.0 0.0 0.0"/>
+  <arg name="bin_xyz" default="0.0 -0.3 0.0"/>
   <arg name="_bin_xyz" value="'$(arg bin_xyz)'" />
 
   <arg name="add_vacuum_gripper" default="false" />
@@ -95,32 +96,8 @@
     add_vader_cutter_1:=false
     add_vader_cutter_2:=$(arg add_vader_eef)
     bin_xyz:=$(arg _bin_xyz)
-    add_vacuum_gripper_1:=$(arg add_vacuum_gripper)
-    add_vacuum_gripper_2:=$(arg add_vacuum_gripper)
-    add_other_geometry_1:=$(arg add_other_geometry)
-    add_other_geometry_2:=$(arg add_other_geometry)
-    geometry_type_1:=$(arg geometry_type)
-    geometry_type_2:=$(arg geometry_type)
-    geometry_mass_1:=$(arg geometry_mass)
-    geometry_mass_2:=$(arg geometry_mass)
-    geometry_height_1:=$(arg geometry_height)
-    geometry_height_2:=$(arg geometry_height)
-    geometry_radius_1:=$(arg geometry_radius)
-    geometry_radius_2:=$(arg geometry_radius)
-    geometry_length_1:=$(arg geometry_length)
-    geometry_length_2:=$(arg geometry_length)
-    geometry_width_1:=$(arg geometry_width)
-    geometry_width_2:=$(arg geometry_width)
-    geometry_mesh_filename_1:=$(arg geometry_mesh_filename)
-    geometry_mesh_filename_2:=$(arg geometry_mesh_filename)
-    geometry_mesh_origin_xyz_1:=$(arg geometry_mesh_origin_xyz)
-    geometry_mesh_origin_xyz_2:=$(arg geometry_mesh_origin_xyz)
-    geometry_mesh_origin_rpy_1:=$(arg geometry_mesh_origin_rpy)
-    geometry_mesh_origin_rpy_2:=$(arg geometry_mesh_origin_rpy)
-    geometry_mesh_tcp_xyz_1:=$(arg geometry_mesh_tcp_xyz)
-    geometry_mesh_tcp_xyz_2:=$(arg geometry_mesh_tcp_xyz)
-    geometry_mesh_tcp_rpy_1:=$(arg geometry_mesh_tcp_rpy)
-    geometry_mesh_tcp_rpy_2:=$(arg geometry_mesh_tcp_rpy)
+    arm_spacing:=$(arg arm_spacing)
+    horizontal_mount_arms:=true
     "/>
 
   <!-- spawn robot model in gazebo, located on the table, -gazebo_namespace defaults to be /gazebo -->

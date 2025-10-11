@@ -40,3 +40,23 @@ cp -r < xarm_ros-copy-of-sdk > < your_path_to_vader_sim/src/ >
 ```
 
 Verify that the workspace builds via catkin_make successfully.
+
+## Launch file usage
+
+The simulator has several canned launch files designed to represent preset scenes for various arm setups.
+
+* VADER_vertical_2arms.launch: Defines dual arms with end effectors mounted vertically (as if mounted on table).
+
+<image src="images/vertical.png" width=512>
+
+* VADER_horizontal_2arms.launch: Defines dual arms with end effectors mounted horizontally (as if mounted on the Warthog platform). The assembly is rotated so that the arms face the +x direction, and offset from the ground by 0.5m (default).
+
+<image src="images/horizontal.png" width=512>
+
+* xarm7_single.launch / xarm7_beside_table.launch: Both launch files are single vertical xarm mounted vertically.
+
+<image src="images/single.png" width=300>
+
+For both dual-arm setups, the end effectors are included, and a storage bin is added at a default location. The inter-arm distance as well as the distance from the ground (in the horizontal case) are defaulted to 0.5m. These arguments are defined inside dual_xarm_device.urdf.xacro, so go check it out and modify it there!
+
+For both dual-arm setups, a breakable pepper spawns at the origin by default. This can be changed via an argument when launching the respective launch files.
