@@ -106,9 +106,9 @@ def publisher():
 
     pepper_seq_sub = rospy.Subscriber("/pepper_sequence", SimulationPepperSequence, _get_sim_pepper_sequence)
     pepper_pop_sub = rospy.Subscriber("/pepper_pop", SimulationPopPepper, _pop_current_pepper)
-    xyz_noise_coarse = rospy.get_param('~xyz_noise_coarse', "0.01")
-    xyz_noise_fine = rospy.get_param('~xyz_noise_fine', "0.01")
-    rpy_noise = rospy.get_param('~rpy_noise', "0.01")
+    xyz_noise_coarse = float(rospy.get_param('~xyz_noise_coarse', "0.01"))
+    xyz_noise_fine = float(rospy.get_param('~xyz_noise_fine', "0.01"))
+    rpy_noise = float(rospy.get_param('~rpy_noise', "0.01"))
     fruit_shape = rospy.get_param('~fruit_shape', "0.08 0.035")
     fruit_shape = list(map(float, fruit_shape.split(" ")))
     _fruit_shape = SolidPrimitive()

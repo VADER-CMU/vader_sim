@@ -9,7 +9,7 @@
     <arg name="pub_topic_coarse" default="/fruit_coarse_pose"/>
     <arg name="pub_topic_fine" default="/fruit_fine_pose"/>
 
-    <node pkg="sim_fake_perception" type="fake_coarse_pe_pub.py" name="fake_coarse_pe_pub" output="screen">
+    <node pkg="sim_fake_perception" type="fake_pose_est_publisher.py" name="fake_pose_est_publisher" output="screen">
         <param name="sim_pepper_pose" value="$(arg sim_pepper_pose)" />
         <param name="xyz_noise_coarse" value="$(arg xyz_noise_coarse)" />
         <param name="xyz_noise_fine" value="$(arg xyz_noise_fine)" />
