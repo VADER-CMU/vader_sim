@@ -13,7 +13,7 @@ pepper_sequence = None
 def create_pepper_fine(peduncle_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
     pepper.header.stamp = rospy.Time.now()
-    pepper.header.frame_id = "link_base"
+    pepper.header.frame_id = "world"
     fruit_down_offset = -( fruit_shape.dimensions[0] / 2 + peduncle_shape.dimensions[0] / 2) - 0.01
 
     # Create the fruit
@@ -66,7 +66,7 @@ def create_pepper_fine(peduncle_pose, fruit_shape, peduncle_shape):
 def create_pepper_coarse(fruit_pose, fruit_shape, peduncle_shape):
     pepper = Pepper()
     pepper.header.stamp = rospy.Time.now()
-    pepper.header.frame_id = "link_base"
+    pepper.header.frame_id = "world"
 
     # Create the fruit
     fruit = Fruit()
