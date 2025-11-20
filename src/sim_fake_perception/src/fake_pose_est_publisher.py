@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import Pose
 from shape_msgs.msg import SolidPrimitive
-from vader_msgs.msg import Pepper, Fruit, Peduncle, SimulationPepperSequence, SimulationPopPepper
+from vader_msgs.msg import Pepper, Fruit, Peduncle, SimulationPepperSequence, SimulationPopPepper, PepperArray
 import numpy as np
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, quaternion_matrix
 
@@ -122,16 +122,16 @@ def publisher():
     _peduncle_shape.dimensions = peduncle_shape
     peduncle_shape = _peduncle_shape
     pub_hz = rospy.get_param('~pub_hz', "10")
-    pub_topic_fine = rospy.get_param('~pub_topic', "/fruit_fine_pose")
-    pub_topic_coarse = rospy.get_param('~pub_topic_coarse', "/fruit_coarse_pose")
+    pub_topic_fine = rospy.get_param('~pub_topic', "/gripper_fine_pepper_array")
+    pub_topic_coarse = rospy.get_param('~pub_topic_coarse', "/gripper_coarse_pepper_array")
     pub_all_coarse_topic = rospy.Publisher("/fruit_coarse_pose_remaining", SimulationPepperSequence, queue_size=10)
 
     global pepper_sequence
     while pepper_sequence is None:
         rospy.sleep(0.1)
 
-    pub_fine = rospy.Publisher(pub_topic_fine, Pepper, queue_size=10)
-    pub_coarse = rospy.Publisher(pub_topic_coarse, Pepper, queue_size=10)
+    pub_fine = rospy.Publisher(pub_topic_fine, PepperArray, queue_size=10)
+    pub_coarse = rospy.Publisher(pub_topic_coarse, PepperArray, queue_size=10)
     rate = rospy.Rate(pub_hz) 
 
     rospy.sleep(1) # Wait for the publisher to be registered
@@ -164,9 +164,13 @@ def publisher():
         peduncle_pose.orientation.w = _quaternion[3]
         # Create pepper
         pepper = create_pepper_fine(peduncle_pose, fruit_shape, peduncle_shape)
+        fine_arr = PepperArray()
+        fine_arr.header.stamp = rospy.Time.now()
+        fine_arr.header.frame_id = "world"
+        fine_arr.peppers.append(pepper)
 
         # rospy.loginfo(f"Publishing Fine Pose Pepper: {pepper}")
-        pub_fine.publish(pepper)
+        pub_fine.publish(fine_arr)
         # Add noise to the gt_pose
         _noise_xyz_coarse = get_gaussian_noise(xyz_noise_coarse)
         _pepper_pose_coarse = Pose()
@@ -183,10 +187,15 @@ def publisher():
 
         # Create pepper
         pepper = create_pepper_coarse(_pepper_pose_coarse, fruit_shape, peduncle_shape)
+        coarse_arr = PepperArray()
+
+        coarse_arr.header.stamp = rospy.Time.now()
+        coarse_arr.header.frame_id = "world"
+        coarse_arr.peppers.append(pepper)
 
         # rospy.loginfo(f"Publishing Coarse Pose Pepper: {pepper}")
-        pub_coarse.publish(pepper)
-        
+        pub_coarse.publish(coarse_arr)
+
         remaining_peppers = []
         # Publish remaining peppers in queue
         for i in range(1, len(pepper_sequence)):

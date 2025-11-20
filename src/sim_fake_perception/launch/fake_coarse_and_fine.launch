@@ -6,8 +6,8 @@
     <arg name="xyz_noise_fine" default="0.0"/>
     <arg name="rpy_noise_fine" default="0.0"/>
     <arg name="pub_hz" default="10"/>
-    <arg name="pub_topic_coarse" default="/fruit_coarse_pose"/>
-    <arg name="pub_topic_fine" default="/fruit_fine_pose"/>
+    <arg name="pub_topic_coarse" default="/gripper_coarse_pepper_array"/>
+    <arg name="pub_topic_fine" default="/gripper_fine_pepper_array"/>
 
     <node pkg="sim_fake_perception" type="fake_pose_est_publisher.py" name="fake_pose_est_publisher" output="screen">
         <param name="sim_pepper_pose" value="$(arg sim_pepper_pose)" />
